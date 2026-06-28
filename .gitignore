@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Experimental and unnecessary files/folders
+/Project_Document/
+/scratch/
+/.vscode/
+/test-no-think.js
+/AGENTS.md
+/CLAUDE.md
