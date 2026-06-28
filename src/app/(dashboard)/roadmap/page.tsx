@@ -18,7 +18,6 @@ import {
   Trash2,
   PowerOff,
   Bot,
-  Youtube,
   Search,
   Link as LinkIcon,
   FileText,

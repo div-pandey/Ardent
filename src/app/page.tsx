@@ -9,7 +9,7 @@ import { Magnetic } from '@/components/ui/magnetic';
 import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 import { toast } from 'sonner';
 
-const ease = [0.16, 1, 0.3, 1];
+const ease = [0.16, 1, 0.3, 1] as any;
 
 const features = [
   { icon: Sparkles, title: 'Career Graph', desc: 'See your skills mapped as a living constellation.', impact: 'Visualize the invisible.' },

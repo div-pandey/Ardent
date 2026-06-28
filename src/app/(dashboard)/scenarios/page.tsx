@@ -252,7 +252,7 @@ export default function ScenariosPage() {
                 disabled={loading}
                 onKeyDown={(e) => e.key === 'Enter' && handleStart()}
               />
-              <Button size="lg" disabled={loading || (usageStats && !usageStats.isUnlimited && usageStats.remaining <= 0)} className="rounded-2xl w-full h-14 text-lg font-semibold" onClick={handleStart}>
+              <Button size="lg" disabled={loading || Boolean(usageStats && !usageStats.isUnlimited && usageStats.remaining <= 0)} className="rounded-2xl w-full h-14 text-lg font-semibold" onClick={handleStart}>
                 {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Start Simulation'}
               </Button>
             </div>

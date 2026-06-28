@@ -175,12 +175,12 @@ export async function findCareerPaths(
 
   return records.map((record, index) => ({
     name: `Route ${index + 1}: ${record.roleNames.slice(1, -1).join(' → ') || 'Direct'}`,
-    steps: record.roleNames,
+    roles: record.roleNames,
     totalMonths: typeof record.totalMonths === 'object' ? record.totalMonths.low : Number(record.totalMonths),
     difficulty: record.difficulty as 'Easy' | 'Moderate' | 'Hard',
-    skillOverlap: typeof record.skillOverlapPercent === 'object' ? record.skillOverlapPercent.low : Number(record.skillOverlapPercent),
+    skillOverlapPercent: typeof record.skillOverlapPercent === 'object' ? record.skillOverlapPercent.low : Number(record.skillOverlapPercent),
     keyNewSkills: record.keyNewSkills || [],
-    recommended: index === 0,
+    isRecommended: index === 0,
   }));
 }
 

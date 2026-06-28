@@ -184,7 +184,7 @@ export default function ChallengesPage() {
 
             {/* Options */}
             <div className="p-6 pt-0 space-y-3">
-              {currentChallenge.options.map((opt, i) => {
+              {currentChallenge.options.map((opt: string, i: number) => {
                 const isSelected = selectedAnswer === i;
                 const isCorrect = i === currentChallenge.correctIndex;
                 let bgState = "bg-muted/50 border-border hover:border-primary/50 hover:bg-muted";

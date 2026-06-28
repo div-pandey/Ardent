@@ -64,7 +64,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <TooltipProvider delayDuration={300}>
+          <TooltipProvider>
             <div id="main-content" className="min-h-screen w-full bg-background relative">
               {/* Global Theme Background */}
               <div

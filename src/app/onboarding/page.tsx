@@ -26,7 +26,7 @@ import { updateProfile } from '@/actions/auth.actions';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
-const ease = [0.16, 1, 0.3, 1];
+const ease = [0.16, 1, 0.3, 1] as any;
 
 const EXPERIENCE_LEVELS = [
   { value: 'student', label: 'Student', desc: 'Currently studying or recently graduated', icon: GraduationCap },

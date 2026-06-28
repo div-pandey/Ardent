@@ -96,7 +96,7 @@ Return ONLY valid JSON array.`;
     let questions = [];
     try {
       // Find JSON array in the response string
-      const match = sarvamRes.match(/\[\s*\{.*\}\s*\]/s);
+      const match = sarvamRes.match(/\[\s*\{[\s\S]*\}\s*\]/);
       if (match) {
         questions = JSON.parse(match[0]);
       } else {

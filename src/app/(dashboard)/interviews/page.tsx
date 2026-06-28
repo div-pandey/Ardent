@@ -231,7 +231,7 @@ export default function MockInterviewsPage() {
                 disabled={loading}
                 onKeyDown={(e) => e.key === 'Enter' && handleStart()}
               />
-              <Button size="lg" className="rounded-2xl w-full h-14 text-lg font-semibold" onClick={handleStart} disabled={loading || (usageStats && !usageStats.isUnlimited && usageStats.remaining <= 0)}>
+              <Button size="lg" className="rounded-2xl w-full h-14 text-lg font-semibold" onClick={handleStart} disabled={loading || Boolean(usageStats && !usageStats.isUnlimited && usageStats.remaining <= 0)}>
                 {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Start Interview'}
               </Button>
             </div>

@@ -14,21 +14,21 @@ export const slideUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -10 },
-  transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
+  transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as any },
 };
 
 export const slideInRight = {
   initial: { opacity: 0, x: 40 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -20 },
-  transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
+  transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] as any },
 };
 
 export const scaleIn = {
   initial: { opacity: 0, scale: 0.9 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.95 },
-  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as any },
 };
 
 export const staggerContainer = {
@@ -55,7 +55,7 @@ export const graphNodeAppear = {
 export const pathReveal = {
   initial: { pathLength: 0, opacity: 0 },
   animate: { pathLength: 1, opacity: 1 },
-  transition: { duration: 1.5, ease: [0.4, 0, 0.2, 1] },
+  transition: { duration: 1.5, ease: [0.4, 0, 0.2, 1] as any },
 };
 
 export const slideDown = {
@@ -69,7 +69,7 @@ export const pageTransition = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -8 },
-  transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
+  transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] as any },
 };
 
 // Spring presets

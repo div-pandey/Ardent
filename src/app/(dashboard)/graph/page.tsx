@@ -278,7 +278,7 @@ export default function GraphPage() {
         // Expand circle and add glow
         d3.select(this).select('circle')
           .transition().duration(200).ease(d3.easeBackOut)
-          .attr('r', NODE_SIZES[d.type] * 1.25)
+          .attr('r', NODE_SIZES[d.type as NodeType] * 1.25)
           .attr('filter', `url(#glow-${d.type})`)
           .attr('opacity', 1);
 
@@ -290,7 +290,7 @@ export default function GraphPage() {
             // Use the color of the *other* node for the line, or fallback to primary if both are the same
             const otherId = sId === d.id ? tId : sId;
             const otherNode = (nodes as any).find((n: any) => n.id === otherId);
-            return otherNode ? NODE_COLORS[otherNode.type] : 'var(--primary)';
+            return otherNode ? NODE_COLORS[otherNode.type as NodeType] : 'var(--primary)';
           }
           return 'color-mix(in srgb, var(--foreground) 5%, transparent)';
         }).attr('stroke-width', (l: any) => {
@@ -307,7 +307,7 @@ export default function GraphPage() {
         // Restore circle
         d3.select(this).select('circle')
           .transition().duration(300).ease(d3.easeCubicOut)
-          .attr('r', NODE_SIZES[d.type])
+          .attr('r', NODE_SIZES[d.type as NodeType])
           .attr('filter', d.type !== 'skill_missing' ? 'url(#premium-shadow)' : null)
           .attr('opacity', d.type === 'skill_missing' ? 0.6 : 1);
 
@@ -330,7 +330,7 @@ export default function GraphPage() {
     node.append('text')
       .text((d: any) => d.label)
       .attr('text-anchor', 'middle')
-      .attr('dy', (d: any) => NODE_SIZES[d.type] + 16)
+      .attr('dy', (d: any) => NODE_SIZES[d.type as NodeType] + 16)
       .attr('fill', 'var(--foreground)')
       .attr('opacity', 0.7)
       .attr('font-size', '11px')
@@ -488,7 +488,7 @@ export default function GraphPage() {
 
               <h3 className="mt-3 text-lg font-bold">{selectedNode.node.label}</h3>
 
-              {selectedNode.node.properties.proficiency && (
+              {Boolean(selectedNode.node.properties.proficiency) && (
                 <p className="mt-1 text-xs text-muted-foreground">
                   Proficiency: {String(selectedNode.node.properties.proficiency)}
                 </p>
