@@ -95,9 +95,14 @@ export default function RegisterPage() {
       return;
     }
 
-    toast.success('Account created! Redirecting to onboarding...');
-    router.push('/onboarding');
-    router.refresh();
+    if (result?.requireEmailVerification) {
+      toast.success('Account created! Please check your email to verify your account.');
+      router.push('/login');
+    } else {
+      toast.success('Account created! Redirecting to onboarding...');
+      router.push('/onboarding');
+      router.refresh();
+    }
   }
 
   async function handleGoogleLogin() {

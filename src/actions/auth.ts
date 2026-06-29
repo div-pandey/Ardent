@@ -46,7 +46,7 @@ export async function signUp(formData: FormData) {
       data: {
         full_name: fullName,
       },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
     },
   });
 
@@ -75,7 +75,7 @@ export async function signUp(formData: FormData) {
     }
   }
 
-  return { success: true };
+  return { success: true, requireEmailVerification: !data.session };
 }
 
 export async function signOut() {
