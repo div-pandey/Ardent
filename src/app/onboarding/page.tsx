@@ -249,7 +249,7 @@ export default function OnboardingPage() {
           className="flex flex-col items-center gap-4"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
-            <Sparkles className="h-6 w-6 text-primary animate-pulse" />
+            <img src="/favicon.ico" alt="Loading..." className="h-6 w-6 animate-pulse" />
           </div>
           <p className="text-sm text-muted-foreground">Loading...</p>
         </motion.div>
@@ -293,7 +293,7 @@ export default function OnboardingPage() {
         >
           <div className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <img src="/favicon.ico" alt="Ardent Logo" className="h-5 w-5" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground">Ardent</span>
           </div>

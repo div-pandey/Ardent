@@ -324,7 +324,7 @@ export default function LandingPage() {
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <button onClick={handleLogoClick} className="group flex items-center gap-3 cursor-pointer" aria-label="Ardent Home">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:bg-primary group-hover:shadow-[0_0_20px_rgba(20,184,166,0.4)]">
-                <Sparkles className="h-5 w-5 text-primary transition-colors duration-500 group-hover:text-foreground" />
+                <img src="/favicon.ico" alt="Ardent" className="h-6 w-6 transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
               </div>
               <span className="relative text-xl font-bold tracking-tighter text-foreground after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 group-hover:after:w-full">ARDENT</span>
             </button>
