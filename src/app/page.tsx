@@ -402,13 +402,13 @@ export default function LandingPage() {
                 className="text-[clamp(3.5rem,8vw,8rem)] font-black leading-[0.9] tracking-tighter text-foreground"
                 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease }}
               >
-                ENGINEER YOUR
+                See the path.
               </motion.h1>
               <motion.h1
                 className="text-[clamp(3.5rem,8vw,8rem)] font-black leading-[0.9] tracking-tighter"
                 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.1, ease }}
               >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[var(--ardent-accent-light)] to-white drop-shadow-lg dark:drop-shadow-none">DREAM CAREER.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[var(--ardent-accent-light)] to-white drop-shadow-lg dark:drop-shadow-none">Build the future.</span>
               </motion.h1>
             </div>
 
@@ -416,19 +416,52 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3, ease }}
               className="mx-auto mt-8 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] font-medium leading-relaxed text-muted-foreground"
             >
-              Stop guessing what to learn next. Ardent identifies exactly what skills you're missing for your dream job, builds a step-by-step roadmap to get you there, and even practices interviews with you so you're ready for day one.
+              Ardent turns your skills, goals, and potential into a clear, personalized plan. Discover exactly what to learn, practice with confidence, and land the role you've always wanted.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease }}
-              className="mt-12 flex flex-col items-center justify-center gap-6 sm:flex-row"
+              className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row"
             >
               <Magnetic>
-                <Link href="/register" className="group relative flex h-16 items-center justify-center gap-3 overflow-hidden rounded-full bg-primary px-10 text-[13px] font-bold uppercase tracking-[0.1em] text-white hover:brightness-110 transition-all duration-300 hover:scale-105">
-                  <span className="relative z-10">Start Mapping</span>
+                <Link href="/register" className="group relative flex h-14 items-center justify-center gap-3 overflow-hidden rounded-full bg-primary px-10 text-[13px] font-bold uppercase tracking-[0.1em] text-white hover:brightness-110 transition-all duration-300 hover:scale-105 shadow-lg shadow-primary/30">
+                  <span className="relative z-10">Start Your Journey</span>
                   <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Magnetic>
+              <Magnetic>
+                <button
+                  onClick={() => document.getElementById('platform')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="group relative flex h-14 items-center justify-center gap-3 rounded-full border-2 border-border bg-background/60 backdrop-blur-sm px-10 text-[13px] font-bold uppercase tracking-[0.1em] text-foreground hover:bg-card/80 transition-all duration-300 hover:scale-105 cursor-pointer"
+                >
+                  <span>See How It Works</span>
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10">
+                    <svg viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 ml-[1px]"><polygon points="6,3 13,8 6,13" /></svg>
+                  </span>
+                </button>
+              </Magnetic>
+            </motion.div>
+
+            {/* Social Proof Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6, ease }}
+              className="mt-10 flex items-center justify-center gap-3"
+            >
+              {/* Stacked Avatars */}
+              <div className="flex -space-x-2.5">
+                {['👩🏽', '👨🏻', '👩🏼', '👨🏾'].map((emoji, i) => (
+                  <div key={i} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-card text-sm shadow-sm">
+                    {emoji}
+                  </div>
+                ))}
+              </div>
+              {/* Stars */}
+              <div className="flex items-center gap-0.5 text-yellow-500">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                ))}
+              </div>
+              <span className="text-sm font-medium text-muted-foreground">Loved by learners building better futures</span>
             </motion.div>
           </motion.div>
         </section>
