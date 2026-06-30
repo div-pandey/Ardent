@@ -402,13 +402,13 @@ export default function LandingPage() {
                 className="text-[clamp(3.5rem,8vw,8rem)] font-black leading-[0.9] tracking-tighter text-foreground"
                 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease }}
               >
-                NAVIGATE YOUR
+                ENGINEER YOUR
               </motion.h1>
               <motion.h1
                 className="text-[clamp(3.5rem,8vw,8rem)] font-black leading-[0.9] tracking-tighter"
                 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.1, ease }}
               >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[var(--ardent-accent-light)] to-white drop-shadow-lg dark:drop-shadow-none">CAREER GRAPH.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[var(--ardent-accent-light)] to-white drop-shadow-lg dark:drop-shadow-none">DREAM CAREER.</span>
               </motion.h1>
             </div>
 
@@ -416,7 +416,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3, ease }}
               className="mx-auto mt-8 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] font-medium leading-relaxed text-muted-foreground"
             >
-              An AI-powered career intelligence platform that maps your skills in a 3D Neo4j graph, generates adaptive learning roadmaps, and simulates real-world interviews to bridge the gap to your dream role.
+              Stop guessing what to learn next. Ardent identifies exactly what skills you're missing for your dream job, builds a step-by-step roadmap to get you there, and even practices interviews with you so you're ready for day one.
             </motion.p>
 
             <motion.div
