@@ -323,10 +323,10 @@ export default function LandingPage() {
         <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent/50 backdrop-blur-xl border-b border-border/40 transition-all duration-300">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <button onClick={handleLogoClick} className="group flex items-center gap-3 cursor-pointer" aria-label="Ardent Home">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:bg-primary group-hover:shadow-[0_0_20px_rgba(20,184,166,0.4)]">
-                <img src="/favicon.ico" alt="Ardent" className="h-6 w-6 transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:bg-primary group-hover:shadow-[0_0_20px_rgba(20,184,166,0.4)]">
+                <img src="/favicon.ico" alt="Ardent" className="h-8 w-8 transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
               </div>
-              <span className="relative text-xl font-bold tracking-tighter text-foreground after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 group-hover:after:w-full">ARDENT</span>
+              <span className="relative text-2xl font-bold tracking-tighter text-foreground after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 group-hover:after:w-full">ARDENT</span>
             </button>
 
             <div className="hidden items-center gap-10 md:flex">
@@ -449,10 +449,13 @@ export default function LandingPage() {
             >
               {/* Stacked Avatars */}
               <div className="flex -space-x-2.5">
-                {['👩🏽', '👨🏻', '👩🏼', '👨🏾'].map((emoji, i) => (
-                  <div key={i} className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-card text-sm shadow-sm">
-                    {emoji}
-                  </div>
+                {[
+                  'https://randomuser.me/api/portraits/women/44.jpg',
+                  'https://randomuser.me/api/portraits/men/32.jpg',
+                  'https://randomuser.me/api/portraits/women/68.jpg',
+                  'https://randomuser.me/api/portraits/men/75.jpg',
+                ].map((src, i) => (
+                  <img key={i} src={src} alt="User" className="h-9 w-9 rounded-full border-2 border-background object-cover shadow-sm" />
                 ))}
               </div>
               {/* Stars */}
