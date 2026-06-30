@@ -12,12 +12,12 @@ import { toast } from 'sonner';
 const ease = [0.16, 1, 0.3, 1] as any;
 
 const features = [
-  { icon: Sparkles, title: 'Career Graph', desc: 'See your skills mapped as a living constellation.', impact: 'Visualize the invisible.' },
-  { icon: Route, title: 'Path Discovery', desc: 'Find multiple routes to your dream job.', impact: 'Every route, one view.' },
-  { icon: MapIcon, title: 'Adaptive Roadmaps', desc: 'A learning plan that evolves as you grow.', impact: 'Plans that keep up.' },
-  { icon: Compass, title: 'Ardent Guide', desc: 'An AI strategist with full context of your goals.', impact: 'Advice built on data.' },
-  { icon: Zap, title: 'Speed to Clarity', desc: 'Full career map in under 2 minutes.', impact: 'Minutes, not months.' },
-  { icon: Shield, title: 'Readiness Scoring', desc: 'Real-time readiness percentage for any target.', impact: 'Outcomes, not opinions.' },
+  { icon: Sparkles, title: 'Career Graph', desc: 'A 3D force-directed map of your current skills vs target roles.', impact: 'Visualize the invisible.' },
+  { icon: MapIcon, title: 'AI Roadmaps', desc: 'Weekly milestones tailored to bridge your exact skill gap.', impact: 'Actionable curricula.' },
+  { icon: Compass, title: 'Ardent Guide', desc: 'A conversational AI mentor with full context of your graph.', impact: 'Context-aware advice.' },
+  { icon: Route, title: 'Mock Scenarios', desc: 'Text-based RPGs and AI interviews to evaluate readiness.', impact: 'Practice before reality.' },
+  { icon: Shield, title: 'Readiness Scoring', desc: 'Real-time metrics tracking your path to your dream job.', impact: 'Outcomes, not opinions.' },
+  { icon: Zap, title: 'ATS Resume Builder', desc: 'Generate clean, machine-readable resumes for ATS parsers.', impact: 'Pass the screeners.' },
 ];
 
 function FeatureCard({ f, index }: { f: typeof features[0]; index: number }) {
@@ -416,7 +416,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3, ease }}
               className="mx-auto mt-8 max-w-2xl text-[clamp(1rem,2vw,1.25rem)] font-medium leading-relaxed text-muted-foreground"
             >
-              Ardent maps the invisible connections between your skills, your goals, and the steps in between. Powerful AI built on Neo4j.
+              An AI-powered career intelligence platform that maps your skills in a 3D Neo4j graph, generates adaptive learning roadmaps, and simulates real-world interviews to bridge the gap to your dream role.
             </motion.p>
 
             <motion.div
@@ -486,10 +486,10 @@ export default function LandingPage() {
           <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center gap-16">
             <motion.div className="flex-1" initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-10%" }} transition={{ duration: 1.2, ease }}>
               <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-black leading-tight tracking-tighter text-foreground">
-                PATH <span className="text-primary">DISCOVERY.</span>
+                ADAPTIVE <span className="text-primary">ROADMAPS.</span>
               </h2>
               <p className="mt-6 text-[15px] font-medium leading-relaxed text-muted-foreground">
-                Stop guessing your next career move. Our Neo4j-powered engine analyzes millions of professional trajectories to map out the exact stepping stones between where you are and where you want to be.
+                Stop guessing what to learn next. Ardent calculates the exact skill gap between your current role and your dream job, generating a personalized, week-by-week curriculum with daily tasks to get you there.
               </p>
             </motion.div>
             <TiltCard className="flex-1 w-full">
@@ -535,7 +535,7 @@ export default function LandingPage() {
                 MEET YOUR <span className="text-primary">AI GUIDE.</span>
               </h2>
               <p className="mt-6 text-[15px] font-medium leading-relaxed text-muted-foreground">
-                A mentor that never sleeps. Powered by Sarvam AI, your guide has full context of your entire resume, your skill gaps, and your target roles before you even type a single word.
+                A mentor that never sleeps. Powered by Sarvam AI, your guide has full access to your Neo4j career graph. It understands your acquired skills, your active roadmap milestones, and your target role before you even ask a question.
               </p>
             </motion.div>
             <TiltCard className="flex-1 w-full">
@@ -589,7 +589,7 @@ export default function LandingPage() {
                 READINESS <span className="text-primary">SCORING.</span>
               </h2>
               <p className="mt-6 text-[15px] font-medium leading-relaxed text-muted-foreground">
-                Stop applying in the dark. We parse your live resume against real-time industry job descriptions to give you a definitive readiness score and highlight exactly which skills you are missing.
+                Track your progress with absolute precision. As you check off roadmap milestones, complete daily challenges, and ace mock interviews, Ardent automatically updates your node relationships to compute a definitive readiness percentage for your target role.
               </p>
             </motion.div>
             <TiltCard className="flex-1 w-full h-full">
