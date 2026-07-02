@@ -214,10 +214,9 @@ function DashboardPricingCard({ plan, isYearly, getPrice, getDuration }: { plan:
 
       {plan.badge && (
         <motion.div 
-          className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-gradient-to-r from-primary via-purple-500 to-primary bg-[length:200%_100%] px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 shadow-[0_0_20px_rgba(20, 184, 166,0.5)]"
+          className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-primary px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-[0_0_20px_rgba(20,184,166,0.5)]"
           animate={{ 
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-            boxShadow: ['0px 0px 20px rgba(20, 184, 166,0.4)', '0px 0px 40px rgba(20, 184, 166,0.8)', '0px 0px 20px rgba(20, 184, 166,0.4)'] 
+            boxShadow: ['0px 0px 20px rgba(20,184,166,0.4)', '0px 0px 40px rgba(20,184,166,0.8)', '0px 0px 20px rgba(20,184,166,0.4)'] 
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         >
