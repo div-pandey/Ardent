@@ -47,11 +47,9 @@ export function BottomNav() {
         })}
 
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <button className="flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 transition-colors text-muted-foreground hover:text-foreground">
-              <Menu className="h-5 w-5" />
-              <span className="text-[10px] font-medium">More</span>
-            </button>
+          <SheetTrigger className="flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 transition-colors text-muted-foreground hover:text-foreground">
+            <Menu className="h-5 w-5" />
+            <span className="text-[10px] font-medium">More</span>
           </SheetTrigger>
           <SheetContent side="bottom" className="h-[85vh] rounded-t-3xl bg-sidebar/95 backdrop-blur-xl border-t border-sidebar-border overflow-y-auto pt-6 px-4 pb-12">
             <SheetHeader className="mb-6 px-2 text-left">
