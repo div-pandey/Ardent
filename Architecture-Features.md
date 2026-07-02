@@ -184,4 +184,22 @@ Monetize the platform via tiered access limits.
 
 ---
 
+## 10. UI/UX & Responsive Design
+
+### Goal
+Deliver a premium, physics-driven, and highly accessible user interface across all device sizes.
+
+### Implementation
+- **RedSun Design System:**
+  - Implements a deep dark mode (`#020617` background) with teal (`#14b8a6`) ambient glows (`bg-[radial-gradient]`).
+  - Utilizes glassmorphism (`backdrop-blur-xl`, `bg-card/60`) and tactile SVG noise overlays to create depth.
+  - Heavy reliance on `framer-motion` for staggered reveals, layout animations, and interactive elements (e.g., magnetic buttons, tilt cards).
+- **Mobile Responsiveness (`src/app/(dashboard)/client-layout.tsx`):**
+  - Desktop utilizes a collapsible sidebar (`w-64` to `w-16`).
+  - Mobile drops the sidebar in favor of a fixed `BottomNav`.
+  - The `BottomNav` utilizes a **Shadcn Sheet** drawer for the "More" menu, ensuring all routes (including secondary routes like Settings and Upgrade) remain accessible on small screens without cluttering the bottom bar.
+  - Hydration safety is strictly enforced by avoiding nested `<button>` elements inside Base UI triggers.
+
+---
+
 > **Continue reading:** [Architecture-Database.md](./Architecture-Database.md) for database schema and data flows.
