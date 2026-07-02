@@ -150,18 +150,11 @@ function LandingPricingCard({ plan, isYearly, index }: { plan: any; isYearly: bo
       </div>
 
       {plan.badge && (
-        <motion.div 
-          className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-gradient-to-r from-primary via-purple-500 to-primary bg-[length:200%_100%] px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-foreground shadow-sm shadow-primary/50"
-          animate={{ 
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
-          }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        >
+        <div className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-primary px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-md shadow-primary/40">
           <span className="relative z-10 flex items-center gap-1.5">
             {plan.badge}
           </span>
-          <div className="absolute inset-0 rounded-full border border-border/30 mix-blend-overlay"></div>
-        </motion.div>
+        </div>
       )}
 
       <div className="relative z-10">
@@ -217,9 +210,16 @@ const landingPlans = [
     price: '$0',
     duration: 'forever',
     description: 'Perfect for exploring your career graph.',
-    features: ['3 AI Roadmaps per day', '5 Resume Parses per day', '10 Mentorship messages/hr', 'Standard Graph Features'],
+    features: [
+      'Save up to 3 Roadmaps',
+      'Generate 1 Roadmap / month',
+      '10 Mentorship Msgs / hour',
+      '3 Daily Micro-Challenges',
+      '1 AI Mock Interview / month',
+      '1 Day-in-the-Life Scenario / month',
+    ],
     buttonText: 'Get Started Free',
-    buttonHref: '/plans',
+    buttonHref: '/register',
     disabled: false,
   },
   {
@@ -228,7 +228,15 @@ const landingPlans = [
     duration: '/ month',
     description: 'For serious career transitions.',
     badge: 'Most Popular',
-    features: ['Unlimited AI Roadmaps', 'Unlimited Resume Parsing', 'Priority AI Mentorship Context', 'Early access to new models'],
+    features: [
+      'Save up to 15 Roadmaps',
+      'Generate 5 Roadmaps / month',
+      '50 Mentorship Msgs / hour',
+      '5 Code Challenges / day',
+      '5 AI Mock Interviews / month',
+      '5 Day-in-the-Life Scenarios / month',
+      'Verifiable Completion Certificates',
+    ],
     buttonText: 'Upgrade to Pro',
     buttonHref: '/plans',
     disabled: false,
@@ -238,7 +246,16 @@ const landingPlans = [
     price: '$49',
     duration: '/ month',
     description: 'Ultimate power for power users.',
-    features: ['Everything in Pro', 'Dedicated Graph Embeddings', 'Infinite Mentorship History', 'Priority Access to Sarvam-105b'],
+    features: [
+      'Save up to 100 Roadmaps',
+      'Generate 25 Roadmaps / month',
+      'Unlimited Mentorship Msgs',
+      '5 Deep-Dive Challenges / day',
+      'Unlimited AI Mock Interviews',
+      'Unlimited Scenarios (High Complexity)',
+      'Exclusive System Design Interviews',
+      'Verifiable Completion Certificates',
+    ],
     buttonText: 'Upgrade to Max',
     buttonHref: '/plans',
     disabled: false,
@@ -248,7 +265,13 @@ const landingPlans = [
     price: 'Custom',
     duration: 'pricing',
     description: 'For teams and organizations.',
-    features: ['Organization-wide Graph', 'Custom Role Definitions', 'Team Skill Gap Analytics', 'Dedicated Success Manager'],
+    features: [
+      'Organization-wide Graph',
+      'Custom Role Definitions',
+      'Team Skill Gap Analytics',
+      'Dedicated Success Manager',
+      'SLA Support',
+    ],
     buttonText: 'Contact Organizer',
     buttonHref: 'mailto:div.pandey.css@gmail.com?subject=Ardent Enterprise Inquiry',
     icon: Mail,
@@ -326,9 +349,7 @@ export default function LandingPage() {
         <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent/50 backdrop-blur-xl border-b border-border/40 transition-all duration-300">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <button onClick={handleLogoClick} className="group flex items-center gap-3 cursor-pointer" aria-label="Ardent Home">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-500 group-hover:bg-primary group-hover:shadow-[0_0_20px_rgba(20,184,166,0.4)]">
-                <img src="/favicon.ico" alt="Ardent" className="h-8 w-8 transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
-              </div>
+              <img src="/favicon.ico" alt="Ardent" className="h-10 w-10 transition-all duration-500 group-hover:scale-110" />
               <span className="relative text-2xl font-bold tracking-tighter text-foreground after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 group-hover:after:w-full">ARDENT</span>
             </button>
 
@@ -752,10 +773,11 @@ export default function LandingPage() {
                 <span className={`text-sm font-medium ${!isYearly ? 'text-foreground' : 'text-muted-foreground'}`}>Monthly</span>
                 <button 
                   onClick={() => setIsYearly(!isYearly)}
-                  className="relative inline-flex h-7 w-14 items-center rounded-full bg-card/70 p-1 transition-colors hover:bg-background/20 focus:outline-none"
+                  className="relative inline-flex h-7 w-14 items-center rounded-full border border-border bg-muted p-1 transition-colors focus:outline-none"
+                  aria-label="Toggle billing period"
                 >
                   <span 
-                    className={`inline-block h-5 w-5 transform rounded-full bg-primary transition-transform shadow-sm shadow-primary/50 ${isYearly ? 'translate-x-7' : 'translate-x-0'}`} 
+                    className={`inline-block h-5 w-5 transform rounded-full bg-primary transition-transform duration-300 shadow-sm shadow-primary/50 ${isYearly ? 'translate-x-7' : 'translate-x-0'}`} 
                   />
                 </button>
                 <div className="flex items-center gap-2">
@@ -785,106 +807,24 @@ export default function LandingPage() {
               </h2>
             </motion.div>
           </div>
-
           <div className="w-full max-w-none">
             <AnimatedTestimonials
               data={[
-                {
-                  description:
-                    "Ardent has completely transformed how I navigate my career. The career graph is incredibly insightful, and the AI mentorship is game-changing.",
-                  image:
-                    "https://images.unsplash.com/photo-1611558709798-e009c8fd7706?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Isabelle Carlos",
-                  handle: "@isabellecarlos",
-                },
-                {
-                  description:
-                    "I love how Ardent makes career planning so actionable with minimal effort. The Neo4j graph reveals paths I never knew existed.",
-                  image:
-                    "https://plus.unsplash.com/premium_photo-1692340973636-6f2ff926af39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Lana Akash",
-                  handle: "@lanaakash",
-                },
-                {
-                  description:
-                    "The real-time readiness scoring and intuitive AI guide in Ardent save me hours of guessing what skills I need next!",
-                  image:
-                    "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Liam O’Connor",
-                  handle: "@liamoc",
-                },
-                {
-                  description:
-                    "Using Ardent feels like magic — it’s so easy to visualize my career trajectory and pinpoint exact skill gaps.",
-                  image:
-                    "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Isabella Mendes",
-                  handle: "@isamendes",
-                },
-                {
-                  description:
-                    "Ardent’s AI guide feels like having a personal career strategist 24/7. The personalized roadmaps are outstanding.",
-                  image:
-                    "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Meera Patel",
-                  handle: "@meerapatel",
-                },
-                {
-                  description:
-                    "I recommend Ardent to everyone looking for a powerful, intelligent platform to accelerate their career growth.",
-                  image:
-                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Emily Chen",
-                  handle: "@emchen",
-                },
-                {
-                  description:
-                    "I was stuck in my current role for 3 years. Ardent's Path Discovery showed me a direct route to Senior Engineering I never considered.",
-                  image:
-                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Marcus Johnson",
-                  handle: "@marcusj_dev",
-                },
-                {
-                  description:
-                    "The Neo4j backend makes the skill mapping incredibly fast. It scanned my resume and built my entire profile in 10 seconds.",
-                  image:
-                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Sarah Lin",
-                  handle: "@sarah_codes",
-                },
-                {
-                  description:
-                    "I used the Ardent AI Guide to prep for my interviews. It knew my exact weak points based on the target job description. Highly recommended!",
-                  image:
-                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "David Kim",
-                  handle: "@davidk",
-                },
-                {
-                  description:
-                    "This is by far the most beautiful career tool I've used. The dark mode graph visualization is stunning, and the insights are actually actionable.",
-                  image:
-                    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Elena Rodriguez",
-                  handle: "@elenar",
-                },
-                {
-                  description:
-                    "Finally, a tool that doesn't just give generic advice. The personalized learning roadmap adapted exactly to my pace and timeline.",
-                  image:
-                    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "James Wilson",
-                  handle: "@jwilson_tech",
-                },
-                {
-                  description:
-                    "Ardent bridged the gap between my self-taught projects and enterprise requirements. The readiness score gave me the confidence to apply.",
-                  image:
-                    "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3",
-                  name: "Chloe Smith",
-                  handle: "@chloesmith",
-                },
+                { description: "The Career Graph blew my mind. Seeing my skills as a living 3D map made me realize exactly what I was missing for a Staff Engineer role. I got the offer in 6 weeks.", image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=400&auto=format&fit=crop", name: "Meera Patel", handle: "@meerapatel" },
+                { description: "I recommend Ardent to every junior dev I mentor. The AI Roadmaps are insanely specific. Game-changing.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop", name: "Emily Chen", handle: "@emchen" },
+                { description: "I was stuck in the same SDE I role for 3 years. Ardent's AI Roadmap showed me the exact 4 skills I needed. I am a Senior now.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop", name: "Marcus Johnson", handle: "@marcusj_dev" },
+                { description: "The Mock Interviews feature is brutal in the best way. It analyzed my target role's JD and asked me exactly the questions the interviewer would. I was fully prepared.", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop", name: "Sarah Lin", handle: "@sarah_codes" },
+                { description: "The Ardent Guide knew my entire skill graph before I typed a single word. It told me exactly which system design gaps were hurting my interview performance. Hired in 3 weeks.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop", name: "David Kim", handle: "@davidk" },
+                { description: "The Day-in-the-Life scenarios are incredibly immersive. I practiced real PM decisions before my first PM interview and the interviewer said I had unusually sharp situational awareness.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop", name: "Elena Rodriguez", handle: "@elenar" },
+                { description: "Daily Challenges turned my career prep into a habit. 15 minutes a day, a 4-week streak, and I had genuinely absorbed DSA patterns I had been avoiding for years.", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop", name: "James Wilson", handle: "@jwilson_tech" },
+                { description: "I used the ATS Resume Builder before applying to Google. A recruiter told me it was one of the cleanest resumes they had seen all quarter.", image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=400&auto=format&fit=crop", name: "Chloe Smith", handle: "@chloesmith" },
+                { description: "The Job Matches feature is smart. It shows me a readiness percentage for each role and tells me exactly what 2-3 skills would push me to 90% and above.", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop", name: "Isabella Mendes", handle: "@isamendes" },
+                { description: "Progress Tracking keeps me honest. Seeing my streak, skill acquisition rate, and readiness score go up week after week is more motivating than any to-do list.", image: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=400&auto=format&fit=crop", name: "Liam O'Connor", handle: "@liamoc" },
+                { description: "The Career Graph revealed I was 3 skills away from a ML Engineer role. Ardent built me a 6-week roadmap. I cleared my first ML interview last month. Absolutely unreal product.", image: "https://plus.unsplash.com/premium_photo-1692340973636-6f2ff926af39?q=80&w=400&auto=format&fit=crop", name: "Lana Akash", handle: "@lanaakash" },
+                { description: "Nothing comes close to Ardent. I've tried everything. The intelligence behind the graph is genuinely on another level.", image: "https://images.unsplash.com/photo-1611558709798-e009c8fd7706?q=80&w=400&auto=format&fit=crop", name: "Isabelle Carlos", handle: "@isabellecarlos" },
+                { description: "As a bootcamp grad with no CS degree, Ardent showed me exactly how to position my skills. The readiness score gave me the data to back myself. Just got into a top-tier startup.", image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=400&auto=format&fit=crop", name: "Ryan Park", handle: "@ryanpark_dev" },
+                { description: "The Ardent Guide remembered everything from our last conversation. It is like having a senior engineer on call who knows exactly where I am and what to tackle next.", image: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=400&auto=format&fit=crop", name: "Priya Nair", handle: "@priyanair_pm" },
+                { description: "I used the Mock Interview 5 times before my Amazon loop. Each session got harder as my graph updated. By interview day, nothing surprised me. Got the L5 offer.", image: "https://images.unsplash.com/photo-1531384441138-2736e62e0919?q=80&w=400&auto=format&fit=crop", name: "Andre Thompson", handle: "@andrethompson" },
               ]}
             />
           </div>
