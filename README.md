@@ -36,6 +36,8 @@ Users upload their resume, and Ardent automatically extracts their skills, maps 
 | **Daily Micro-Challenges** | Streak-based quizzes tied to your active roadmap task, with code snippets for paid tiers |
 | **Completion Certificates** | Verifiable, PDF-downloadable certificates with unique verification codes |
 | **Tiered Subscriptions** | Free / Pro / Max / Enterprise plans with Razorpay payment integration |
+| **RedSun Design System** | Premium dark-mode UI with glassmorphism, teal glows, tactile noise, and Framer Motion animations |
+| **Mobile-First Dashboard** | Fully responsive web app utilizing bottom-nav drawers (Shadcn Sheet) for mobile accessibility |
 
 ---
 
