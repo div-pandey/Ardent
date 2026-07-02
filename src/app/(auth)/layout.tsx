@@ -91,8 +91,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900/5 border border-slate-900/10 dark:bg-white/[0.03] dark:border-white/[0.05] shadow-lg backdrop-blur-md">
-              <Sparkles className="h-6 w-6 text-teal-500 dark:text-teal-400" />
+            <div className="mx-auto mb-8 flex items-center justify-center">
+              <img src="/favicon.ico" alt="Ardent Logo" className="h-14 w-14 drop-shadow-[0_0_15px_rgba(20,184,166,0.5)]" />
             </div>
             
             <h2 className="text-4xl font-bold tracking-tight sm:text-5xl text-slate-900 dark:text-white">

@@ -888,9 +888,7 @@ export default function LandingPage() {
 
           <div className="mt-16 flex flex-col items-center justify-between border-t border-border/40 pt-10 md:flex-row">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/20">
-                <Sparkles className="h-5 w-5 text-primary" />
-              </div>
+              <img src="/favicon.ico" alt="Ardent Logo" className="h-10 w-10" />
               <span className="text-xl font-black tracking-tighter text-foreground">ARDENT</span>
             </div>
             <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 md:mt-0">
