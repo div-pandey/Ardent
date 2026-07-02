@@ -18,8 +18,8 @@ export function getDriver(): Driver {
 
     globalThis._neo4jDriver = neo4j.driver(uri, neo4j.auth.basic(user, password), {
       maxConnectionPoolSize: 50,
-      connectionTimeout: 10000,
-      connectionAcquisitionTimeout: 10000,
+      connectionTimeout: 30000,
+      connectionAcquisitionTimeout: 30000,
       maxConnectionLifetime: 3 * 60 * 1000, // 3 minutes to prevent Aura drops
       maxTransactionRetryTime: 30000,
       logging: {
