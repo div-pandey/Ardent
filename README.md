@@ -72,7 +72,7 @@ Users upload their resume, and Ardent automatically extracts their skills, maps 
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/ardent.git
+git clone https://github.com/kumar-divyansh/ardent.git
 cd ardent
 npm install
 ```
