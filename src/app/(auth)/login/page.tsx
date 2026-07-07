@@ -109,7 +109,7 @@ export default function LoginPage() {
         <Button
           id="google-login-btn"
           variant="outline"
-          className="w-full gap-2 transition-fast"
+          className="w-full h-11 gap-2 transition-fast"
           onClick={handleGoogleLogin}
           type="button"
         >
@@ -124,7 +124,7 @@ export default function LoginPage() {
         <Button
           id="github-login-btn"
           variant="outline"
-          className="w-full gap-2 transition-fast"
+          className="w-full h-11 gap-2 transition-fast"
           onClick={handleGithubLogin}
           type="button"
         >
@@ -217,7 +217,7 @@ export default function LoginPage() {
         <Button
           id="login-submit-btn"
           type="submit"
-          className="w-full transition-fast"
+          className="w-full h-11 transition-fast"
           disabled={loading}
           aria-busy={loading}
         >
