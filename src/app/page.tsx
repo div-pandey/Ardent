@@ -705,8 +705,8 @@ export default function LandingPage() {
         <section id="about" className="relative border-y border-border/40 bg-card/40 backdrop-blur-md px-6 py-40 overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
           <motion.div className="relative z-10 mx-auto max-w-4xl text-center" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-card/60 border border-border/40">
-              <Sparkles className="h-8 w-8 text-foreground" />
+            <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center">
+              <img src="/favicon.ico" alt="Ardent Logo" className="h-12 w-12 drop-shadow-[0_0_15px_rgba(20,184,166,0.4)]" />
             </div>
             <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-black leading-[0.9] tracking-tighter text-foreground">
               OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--ardent-accent-dark)] to-[var(--ardent-accent-light)]">MISSION.</span>
