@@ -129,9 +129,7 @@ export default function RegisterPage() {
     >
       {/* Logo */}
       <div className="mb-8 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-          <img src="/favicon.ico" alt="Ardent Logo" className="h-5 w-5" />
-        </div>
+        <img src="/favicon.ico" alt="Ardent Logo" className="h-9 w-9" />
         <span className="text-xl font-bold tracking-tight">Ardent</span>
       </div>
 
