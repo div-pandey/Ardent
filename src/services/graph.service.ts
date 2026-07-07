@@ -197,6 +197,8 @@ export async function analyzeSkillGap(
     
     MATCH (target:Role)-[req:REQUIRES_SKILL]->(required:Skill)
     WHERE toLower(target.name) = toLower($targetRole)
+       OR toLower(target.name) CONTAINS toLower($targetRole)
+       OR toLower($targetRole) CONTAINS toLower(target.name)
     
     WITH userSkills, 
          collect({
@@ -276,7 +278,9 @@ export async function getSkillRecommendations(
 ): Promise<SkillRecommendation[]> {
   const cypher = `
     MATCH (target:Role)-[req:REQUIRES_SKILL]->(skill:Skill)
-    WHERE toLower(target.name) = toLower($targetRole)
+    WHERE (toLower(target.name) = toLower($targetRole) 
+       OR toLower(target.name) CONTAINS toLower($targetRole)
+       OR toLower($targetRole) CONTAINS toLower(target.name))
     AND NOT EXISTS {
       MATCH (u:User {userId: $userId})-[:HAS_SKILL]->(skill)
     }
