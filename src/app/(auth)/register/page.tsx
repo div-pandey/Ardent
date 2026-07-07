@@ -191,7 +191,7 @@ export default function RegisterPage() {
                 placeholder="John Doe"
                 value={fullName}
                 onChange={(e) => { setFullName(e.target.value); clearFieldError('fullName'); }}
-                className={`pl-9 relative z-0 ${fieldErrors.fullName ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                className={`pl-9 h-11 relative z-0 ${fieldErrors.fullName ? 'border-destructive focus:ring-destructive/20' : ''}`}
                 aria-invalid={!!fieldErrors.fullName}
                 aria-describedby={fieldErrors.fullName ? 'register-name-error' : undefined}
                 autoComplete="name"
@@ -216,7 +216,7 @@ export default function RegisterPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); clearFieldError('email'); }}
-                className={`pl-9 relative z-0 ${fieldErrors.email ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                className={`pl-9 h-11 relative z-0 ${fieldErrors.email ? 'border-destructive focus:ring-destructive/20' : ''}`}
                 aria-invalid={!!fieldErrors.email}
                 aria-describedby={fieldErrors.email ? 'register-email-error' : undefined}
                 autoComplete="email"
@@ -250,7 +250,7 @@ export default function RegisterPage() {
                     clearFieldError('confirmPassword');
                   }
                 }}
-                className={`pl-9 pr-9 relative z-0 ${fieldErrors.password ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                className={`pl-9 pr-9 h-11 relative z-0 ${fieldErrors.password ? 'border-destructive focus:ring-destructive/20' : ''}`}
                 aria-invalid={!!fieldErrors.password}
                 aria-describedby="password-strength register-password-error"
                 autoComplete="new-password"
@@ -348,7 +348,7 @@ export default function RegisterPage() {
                     clearFieldError('confirmPassword');
                   }
                 }}
-                className={`pl-9 relative z-0 ${fieldErrors.confirmPassword ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                className={`pl-9 h-11 relative z-0 ${fieldErrors.confirmPassword ? 'border-destructive focus:ring-destructive/20' : ''}`}
                 aria-invalid={!!fieldErrors.confirmPassword}
                 aria-describedby={fieldErrors.confirmPassword ? 'register-confirm-error' : undefined}
                 autoComplete="new-password"

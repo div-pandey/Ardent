@@ -168,7 +168,7 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setFieldErrors((p) => ({ ...p, email: undefined })); }}
-                className={`pl-9 relative z-0 ${fieldErrors.email ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                className={`pl-9 h-11 relative z-0 ${fieldErrors.email ? 'border-destructive focus:ring-destructive/20' : ''}`}
                 aria-invalid={!!fieldErrors.email}
                 aria-describedby={fieldErrors.email ? 'login-email-error' : undefined}
                 autoComplete="email"
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setFieldErrors((p) => ({ ...p, password: undefined })); }}
-                className={`pl-9 pr-9 relative z-0 ${fieldErrors.password ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                className={`pl-9 pr-9 h-11 relative z-0 ${fieldErrors.password ? 'border-destructive focus:ring-destructive/20' : ''}`}
                 aria-invalid={!!fieldErrors.password}
                 aria-describedby={fieldErrors.password ? 'login-password-error' : undefined}
                 autoComplete="current-password"
@@ -236,7 +236,7 @@ export default function LoginPage() {
         Don&apos;t have an account?{' '}
         <Link
           href="/register"
-          className="font-bold text-lg text-gradient-accent drop-shadow-sm hover:drop-shadow-[0_0_12px_hsla(262,83%,58%,0.6)] transition-all duration-300 ml-1"
+          className="font-bold text-lg text-primary hover:text-primary/80 hover:drop-shadow-[0_0_12px_rgba(20,184,166,0.5)] transition-all duration-300 ml-1"
         >
           Sign up
         </Link>
