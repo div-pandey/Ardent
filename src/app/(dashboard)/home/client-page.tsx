@@ -27,6 +27,7 @@ import {
   Award,
   Network,
   Users,
+  Swords,
 } from 'lucide-react';
 import { ReadinessGauge } from '@/components/shared/readiness-gauge';
 import { AnimatedDigit } from '@/components/shared';
@@ -77,7 +78,7 @@ const quickActions = [
     href: '/graph', color: 'text-primary', bg: 'bg-primary/10', borderColor: 'border-primary/20',
   },
   {
-    icon: Target, label: 'Daily Challenges', description: 'Complete your micro-goals',
+    icon: Swords, label: 'Daily Challenges', description: 'Complete your micro-goals',
     href: '/challenges', color: 'text-amber-400', bg: 'bg-amber-400/10', borderColor: 'border-amber-400/20',
   },
   {

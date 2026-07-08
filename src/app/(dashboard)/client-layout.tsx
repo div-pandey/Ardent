@@ -22,6 +22,8 @@ import {
   LogOut,
   Zap,
   Sparkles,
+  Swords,
+  Coffee,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -33,9 +35,9 @@ const navItems = [
   { label: 'Home', href: '/home', icon: Home },
   { label: 'Career Graph', href: '/graph', icon: Network },
   { label: 'Adaptive Roadmap', href: '/roadmap', icon: Map },
-  { label: 'Daily Challenges', href: '/challenges', icon: Target },
+  { label: 'Daily Challenges', href: '/challenges', icon: Swords },
   { label: 'Mock Interviews', href: '/interviews', icon: Users },
-  { label: 'Day in the Life', href: '/scenarios', icon: Terminal },
+  { label: 'Day in the Life', href: '/scenarios', icon: Coffee },
   { label: 'Ardent Guide', href: '/guide', icon: BookOpen },
   { label: 'Progress', href: '/progress', icon: BarChart3 },
 ];
