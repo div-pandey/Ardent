@@ -14,6 +14,7 @@ import {
   Users,
   Terminal,
   FileText,
+  Map,
   Briefcase,
   Settings,
   PanelLeftClose,
@@ -31,7 +32,7 @@ import { createClient } from '@/lib/supabase/client';
 const navItems = [
   { label: 'Home', href: '/home', icon: Home },
   { label: 'Career Graph', href: '/graph', icon: Network },
-  { label: 'Adaptive Roadmap', href: '/roadmap', icon: Route },
+  { label: 'Adaptive Roadmap', href: '/roadmap', icon: Map },
   { label: 'Daily Challenges', href: '/challenges', icon: Target },
   { label: 'Mock Interviews', href: '/interviews', icon: Users },
   { label: 'Day in the Life', href: '/scenarios', icon: Terminal },

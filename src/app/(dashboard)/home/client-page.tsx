@@ -25,6 +25,8 @@ import {
   BarChart3,
   BookOpen,
   Award,
+  Network,
+  Users,
 } from 'lucide-react';
 import { ReadinessGauge } from '@/components/shared/readiness-gauge';
 import { AnimatedDigit } from '@/components/shared';
@@ -71,15 +73,15 @@ interface ActiveMilestoneData {
 
 const quickActions = [
   {
-    icon: Sparkles, label: 'Career Graph', description: 'Explore your skill constellation',
+    icon: Network, label: 'Career Graph', description: 'Explore your skill constellation',
     href: '/graph', color: 'text-primary', bg: 'bg-primary/10', borderColor: 'border-primary/20',
   },
   {
-    icon: Swords, label: 'Daily Challenges', description: 'Complete your micro-goals',
+    icon: Target, label: 'Daily Challenges', description: 'Complete your micro-goals',
     href: '/challenges', color: 'text-amber-400', bg: 'bg-amber-400/10', borderColor: 'border-amber-400/20',
   },
   {
-    icon: Mic, label: 'Mock Interviews', description: 'Practice with AI hiring manager',
+    icon: Users, label: 'Mock Interviews', description: 'Practice with AI hiring manager',
     href: '/interviews', color: 'text-blue-400', bg: 'bg-blue-400/10', borderColor: 'border-blue-400/20',
   },
   {
