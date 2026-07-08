@@ -27,7 +27,6 @@ import {
   Award,
   Network,
   Users,
-  Swords,
 } from 'lucide-react';
 import { ReadinessGauge } from '@/components/shared/readiness-gauge';
 import { AnimatedDigit } from '@/components/shared';
@@ -384,7 +383,7 @@ export default function ClientHomePage({ initialGraphData }: { initialGraphData:
                   </span>
                 </div>
                 <Link href="/paths" className="shrink-0">
-                  <Button variant="outline" size="sm" className="gap-1.5 rounded-lg">
+                  <Button variant="outline" size="sm" className="gap-1.5 rounded-lg px-5">
                     View Paths <ChevronRight className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -447,7 +446,7 @@ export default function ClientHomePage({ initialGraphData }: { initialGraphData:
                       </div>
                     </div>
 
-                    <div className="mt-4 flex-1 space-y-1.5 overflow-y-auto max-h-[220px]">
+                    <div className="mt-4 flex-1 space-y-1.5 overflow-y-auto max-h-[220px] custom-scrollbar pr-1">
                       {activeMilestone.tasks.map((task, i) => (
                         <button
                           key={i}
@@ -477,7 +476,7 @@ export default function ClientHomePage({ initialGraphData }: { initialGraphData:
                         </Button>
                       )}
                       <Link href="/roadmap">
-                        <Button variant="outline" size="sm" className="gap-1.5 rounded-lg text-xs">
+                        <Button variant="outline" size="sm" className="gap-1.5 rounded-lg text-xs px-5">
                           Open Roadmap <ChevronRight className="h-3.5 w-3.5" />
                         </Button>
                       </Link>
