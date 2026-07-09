@@ -174,8 +174,17 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
               <>
                 <div 
                   ref={certRef}
-                  className="relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner"
+                  className={`relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner ${status !== 'issued' ? 'select-none pointer-events-none' : ''}`}
                 >
+                  {/* Anti-screenshot Watermark */}
+                  {status !== 'issued' && (
+                    <div className="absolute inset-0 z-50 flex items-center justify-center overflow-hidden pointer-events-none mix-blend-multiply opacity-[0.03]">
+                      <div className="transform -rotate-45 text-[150px] font-black tracking-tighter whitespace-nowrap text-slate-900 uppercase">
+                        Preview Only preview only
+                      </div>
+                    </div>
+                  )}
+
                   {/* Background Accents - Subtle wave pattern simulation */}
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.08)_0%,transparent_60%)] pointer-events-none" />
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-emerald-500/10 rounded-[40%_60%_70%_30%/40%_50%_60%_50%] animate-[spin_60s_linear_infinite] pointer-events-none" />

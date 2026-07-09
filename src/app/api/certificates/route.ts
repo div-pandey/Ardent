@@ -85,10 +85,6 @@ export async function POST(request: Request) {
     const milestones = roadmap.milestones_data as any[];
     const isCompleted = milestones.every(m => m.status === 'completed');
 
-    if (!isCompleted) {
-      return NextResponse.json({ error: 'Roadmap must be fully completed to get a certificate.' }, { status: 403 });
-    }
-
     // Check existing certificate
     const { data: existingCert } = await supabase
       .from('certificates')
@@ -101,6 +97,10 @@ export async function POST(request: Request) {
     }
 
     if (action === 'issue') {
+      if (!isCompleted) {
+        return NextResponse.json({ error: 'Roadmap must be fully completed to get a certificate.' }, { status: 403 });
+      }
+
       // Free users cannot issue certificates
       if (tier === 'free') {
         return NextResponse.json({ error: 'Please upgrade to Pro or Max to generate and download certificates.' }, { status: 403 });
