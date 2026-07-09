@@ -26,6 +26,7 @@ import {
   X,
   Loader2,
   RefreshCw,
+  Award,
 } from 'lucide-react';
 import { getSearchResourceURLs } from '@/lib/tiers';
 import { Button } from '@/components/ui/button';
