@@ -191,18 +191,18 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] border border-emerald-500/10 rounded-[60%_40%_30%_70%/60%_30%_70%_40%] animate-[spin_40s_linear_infinite_reverse] pointer-events-none" />
                   
                   {/* Inner Borders */}
-                  <div className="absolute inset-4 border-[0.5px] border-slate-300 pointer-events-none z-10" />
-                  <div className="absolute inset-[18px] border-[0.5px] border-slate-300 pointer-events-none z-10" />
-                  <div className="absolute inset-[24px] border-[0.5px] border-slate-300 pointer-events-none z-10" />
+                  <div className="absolute inset-4 border-[0.5px] border-slate-400/70 pointer-events-none z-10" />
+                  <div className="absolute inset-[20px] border-[0.5px] border-slate-400/50 pointer-events-none z-10" />
+                  <div className="absolute inset-[24px] border-[0.5px] border-slate-400/40 pointer-events-none z-10" />
                   
                   {/* Corner Ornaments */}
-                  <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-slate-400 z-10" />
-                  <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-slate-400 z-10" />
-                  <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-slate-400 z-10" />
-                  <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-slate-400 z-10" />
+                  <div className="absolute top-4 left-4 w-5 h-5 border-t-[2px] border-l-[2px] border-slate-500 z-10" />
+                  <div className="absolute top-4 right-4 w-5 h-5 border-t-[2px] border-r-[2px] border-slate-500 z-10" />
+                  <div className="absolute bottom-4 left-4 w-5 h-5 border-b-[2px] border-l-[2px] border-slate-500 z-10" />
+                  <div className="absolute bottom-4 right-4 w-5 h-5 border-b-[2px] border-r-[2px] border-slate-500 z-10" />
 
-                  {/* Main Content Container */}
-                  <div className="flex flex-col w-full h-full z-20 relative p-8">
+                  {/* Main Content Container - Strictly constrained within borders */}
+                  <div className="absolute inset-[36px] flex flex-col z-20">
                     
                     {/* Header Row: Logos and Badges */}
                     <div className="flex justify-between items-start w-full">
@@ -247,7 +247,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                     </div>
 
                     {/* Middle Content */}
-                    <div className="flex flex-col items-center justify-center flex-1 w-full mt-2 md:mt-4">
+                    <div className="flex flex-col items-center justify-center flex-1 w-full min-h-0">
                       <h1 className="text-2xl md:text-4xl font-bold text-slate-800 tracking-tight font-sans mb-4 md:mb-6">
                         Certificate of Completion
                       </h1>
@@ -266,11 +266,17 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                     </div>
 
                     {/* Bottom Row */}
-                    <div className="w-full grid grid-cols-3 items-end mt-auto pt-8">
+                    <div className="w-full grid grid-cols-3 items-end mt-auto pt-2">
                       {/* Left: Date */}
-                      <div className="flex flex-col">
-                        <span className="text-[9px] md:text-[11px] font-bold text-slate-700">
-                          Certificate issued on : {issuedAt 
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-[8px] md:text-[10px] text-slate-500 mb-1">
+                          Verify at: https://ardent.com/certificate?id={uniqueCode || 'MOCK-CERT-123'}
+                        </span>
+                        <span className="text-[10px] md:text-xs font-bold text-slate-700">
+                          Certificate issued on : 
+                        </span>
+                        <span className="text-[9px] md:text-[11px] font-semibold text-slate-800">
+                          {issuedAt 
                             ? new Date(issuedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) 
                             : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </span>
@@ -278,8 +284,8 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                       
                       {/* Center: Signature */}
                       <div className="flex flex-col items-center relative">
-                        <span className="font-['Brush_Script_MT',cursive] text-2xl md:text-4xl text-slate-800 absolute -top-4 md:-top-8 rotate-[-5deg]">Divyansh</span>
-                        <span className="text-[10px] md:text-sm text-transparent mb-1">Divyansh</span>
+                        <span className="font-['Brush_Script_MT',cursive] text-2xl md:text-4xl text-slate-800 absolute -top-3 md:-top-5 rotate-[-5deg] pointer-events-none">Divyansh</span>
+                        <span className="text-[10px] md:text-sm text-transparent mb-1 select-none pointer-events-none">Divyansh</span>
                         <div className="h-px w-32 md:w-48 bg-slate-400 mb-1.5 md:mb-2" />
                         <span className="text-[10px] md:text-xs text-slate-800 font-bold">M. Divyansh</span>
                         <span className="text-[8px] md:text-[9px] text-slate-500 mt-0.5">Founder and CEO,</span>
@@ -287,18 +293,15 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                       </div>
 
                       {/* Right: Verification */}
-                      <div className="flex flex-col items-end">
-                        <span className="text-[8px] md:text-[10px] text-slate-500">
-                          Valid certificate ID : <span className="font-mono text-slate-700 font-bold">{uniqueCode || 'MOCK-CERT-123'}</span>
+                      <div className="flex flex-col items-end gap-0.5">
+                        <span className="text-[10px] md:text-xs font-bold text-slate-700">
+                          Valid certificate ID : 
+                        </span>
+                        <span className="font-mono text-slate-800 font-bold text-[9px] md:text-[11px]">
+                          {uniqueCode || 'MOCK-CERT-123'}
                         </span>
                       </div>
                     </div>
-
-                    {/* Bottom Verification Text (Very bottom) */}
-                    <div className="absolute bottom-4 left-8 text-[7px] md:text-[8px] text-slate-400">
-                      Verify certificate at: https://ardent.com/certificate?id={uniqueCode || 'MOCK-CERT-123'}
-                    </div>
-
                   </div>
                 </div>
 
