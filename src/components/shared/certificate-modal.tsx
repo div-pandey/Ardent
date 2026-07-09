@@ -176,11 +176,14 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                   ref={certRef}
                   className={`relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner ${status !== 'issued' ? 'select-none pointer-events-none' : ''}`}
                 >
-                  {/* Anti-screenshot Watermark */}
+                  {/* Anti-screenshot Watermark - Aggressive Foreground Grid */}
                   {status !== 'issued' && (
-                    <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none">
-                      <div className="transform -rotate-45 text-[120px] md:text-[150px] font-black tracking-tighter whitespace-nowrap text-slate-100 uppercase select-none">
-                        Preview Only preview only
+                    <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden flex flex-col items-center justify-center opacity-30 mix-blend-overlay bg-[repeating-linear-gradient(45deg,transparent,transparent_40px,rgba(203,213,225,0.8)_40px,rgba(203,213,225,0.8)_80px)]">
+                      {/* Diagonal Text Watermark */}
+                      <div className="absolute inset-0 flex items-center justify-center transform -rotate-45">
+                        <div className="text-[60px] md:text-[80px] font-black tracking-[1em] whitespace-nowrap text-slate-800 uppercase px-20">
+                          PREVIEW SAMPLE
+                        </div>
                       </div>
                     </div>
                   )}
@@ -252,7 +255,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                         Certificate of Completion
                       </h1>
 
-                      <h2 className="text-2xl md:text-4xl font-semibold mb-3 md:mb-4 text-center text-slate-900 tracking-tight font-serif">
+                      <h2 className={`text-2xl md:text-4xl font-semibold mb-3 md:mb-4 text-center text-slate-900 tracking-tight font-serif ${status !== 'issued' ? 'blur-[4px] select-none' : ''}`}>
                         {recipientName || 'Your Name'}
                       </h2>
 
@@ -297,7 +300,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                         <span className="text-[10px] md:text-xs font-bold text-slate-700">
                           Valid certificate ID : 
                         </span>
-                        <span className="font-mono text-slate-800 font-bold text-[9px] md:text-[11px]">
+                        <span className={`font-mono text-slate-800 font-bold text-[9px] md:text-[11px] ${status !== 'issued' ? 'blur-[3px] select-none' : ''}`}>
                           {uniqueCode || 'MOCK-CERT-123'}
                         </span>
                       </div>
