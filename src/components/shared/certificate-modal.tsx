@@ -26,6 +26,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
   const [uniqueCode, setUniqueCode] = useState('');
   const [issuedAt, setIssuedAt] = useState('');
   const [isScreenshotAttempt, setIsScreenshotAttempt] = useState(false);
+  const [clipboardAllowed, setClipboardAllowed] = useState<boolean | null>(null);
   const certRef = useRef<HTMLDivElement>(null);
 
   const isFree = tier === 'free';
@@ -38,7 +39,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
       if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
         e.preventDefault();
         setIsScreenshotAttempt(true);
-        navigator.clipboard.writeText("Screenshots are strictly prohibited for unverified certificates.");
+        navigator.clipboard.writeText("screenshot is prohibited for unverified certificates");
         toast.error("Screenshot Detected", { description: "Capturing unverified certificates is prohibited." });
         
         setTimeout(() => setIsScreenshotAttempt(false), 3000);
@@ -47,7 +48,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
-        navigator.clipboard.writeText("Screenshots are strictly prohibited for unverified certificates.");
+        navigator.clipboard.writeText("screenshot is prohibited for unverified certificates");
       }
     };
 
@@ -216,10 +217,34 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
               </div>
             ) : (
               <>
-                <div 
-                  ref={certRef}
-                  className={`relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner ${status !== 'issued' ? 'select-none pointer-events-none' : ''}`}
-                >
+                {status === 'draft' && !clipboardAllowed ? (
+                  <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm p-8 text-center border-2 border-dashed border-border rounded-xl m-4">
+                    <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                      <Lock className="h-8 w-8 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Clipboard Access Required</h3>
+                    <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+                      To prevent unauthorized distribution and screenshots, preview mode requires clipboard access.
+                    </p>
+                    <Button 
+                      onClick={async () => {
+                        try {
+                          await navigator.clipboard.writeText("Preview Access Granted");
+                          setClipboardAllowed(true);
+                        } catch (err) {
+                          toast.error("Clipboard permission denied", { description: "Please allow clipboard access to view the preview." });
+                        }
+                      }}
+                      className="px-8 font-bold"
+                    >
+                      Allow Access to View
+                    </Button>
+                  </div>
+                ) : (
+                  <div 
+                    ref={certRef}
+                    className={`relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner ${status !== 'issued' ? 'select-none pointer-events-none' : ''}`}
+                  >
                   {/* Advanced Anti-Screenshot Blackout */}
                   {isScreenshotAttempt && (
                     <div className="absolute inset-0 z-[100] bg-black flex flex-col items-center justify-center">
@@ -358,7 +383,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {isFree && (
                   <div className="absolute inset-0 z-20 backdrop-blur-md bg-black/40 flex flex-col items-center justify-center text-center p-6">
