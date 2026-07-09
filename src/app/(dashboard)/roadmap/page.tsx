@@ -33,6 +33,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { staggerContainer, staggerItem } from '@/lib/motion';
 import { toast } from 'sonner';
+import { CertificateModal } from '@/components/shared/certificate-modal';
 
 interface DemoMilestone {
   id: string;
@@ -68,6 +69,7 @@ export default function RoadmapPage() {
   const [loading, setLoading] = useState(false);
   const [hasGenerated, setHasGenerated] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
 
   // Persisted roadmap state
   const [savedRoadmaps, setSavedRoadmaps] = useState<SavedRoadmap[]>([]);
@@ -657,6 +659,49 @@ export default function RoadmapPage() {
                 </button>
               </div>
             ))}
+            
+            {/* Certificate Node */}
+            {milestones.length > 0 && (
+              <div className="relative flex gap-3 mt-2">
+                {/* Timeline line connecting from the last milestone */}
+                <div
+                  className={`absolute left-[9px] -top-6 h-8 w-px ${
+                    completedCount === totalCount
+                      ? 'bg-emerald-400/50'
+                      : 'bg-muted-foreground/15'
+                  }`}
+                />
+                
+                {/* Status icon */}
+                <div className="relative z-10 mt-1 shrink-0">
+                  {completedCount === totalCount ? (
+                    <Award className="h-5 w-5 text-emerald-400" />
+                  ) : (
+                    <Lock className="h-5 w-5 text-muted-foreground/50" />
+                  )}
+                </div>
+
+                {/* Milestone button */}
+                <button
+                  className={`mb-4 flex-1 rounded-lg border p-3 text-left transition-all ${
+                    completedCount === totalCount
+                      ? 'border-emerald-400/30 bg-emerald-400/5 hover:bg-emerald-400/10'
+                      : 'border-transparent hover:bg-muted/30 opacity-70'
+                  }`}
+                  onClick={() => setIsCertModalOpen(true)}
+                >
+                  <p className="text-xs text-muted-foreground">Final Step</p>
+                  <p className="mt-0.5 text-sm font-semibold flex items-center gap-2">
+                    Official Certificate
+                    {completedCount === totalCount ? (
+                      <Badge className="bg-emerald-400/20 text-emerald-400 hover:bg-emerald-400/20 text-[9px] ml-auto border-emerald-400/20">Available</Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-[9px] ml-auto border-border">Preview</Badge>
+                    )}
+                  </p>
+                </button>
+              </div>
+            )}
           </motion.div>
 
           {/* Detail Panel */}
@@ -857,6 +902,15 @@ export default function RoadmapPage() {
           )}
         </div>
       </motion.div>
+
+      {/* Certificate Modal */}
+      <CertificateModal
+        isOpen={isCertModalOpen}
+        onClose={() => setIsCertModalOpen(false)}
+        roadmapId={currentRoadmapId || 'mock-123'}
+        roadmapTitle={activeRoadmap?.title || targetRole || 'Software Engineer Roadmap'}
+        tier={userTier}
+      />
     </div>
   );
 }

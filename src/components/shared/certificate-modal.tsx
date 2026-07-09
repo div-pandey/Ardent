@@ -174,78 +174,122 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
               <>
                 <div 
                   ref={certRef}
-                  className="relative w-full aspect-[1.414/1] bg-white text-slate-900 p-6 flex flex-col items-center justify-center overflow-hidden border-[16px] border-slate-50"
+                  className="relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner"
                 >
-                  {/* Background Accents */}
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.05),transparent_70%)] pointer-events-none" />
+                  {/* Background Accents - Subtle wave pattern simulation */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.08)_0%,transparent_60%)] pointer-events-none" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] border border-emerald-500/10 rounded-[40%_60%_70%_30%/40%_50%_60%_50%] animate-[spin_60s_linear_infinite] pointer-events-none" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] border border-emerald-500/10 rounded-[60%_40%_30%_70%/60%_30%_70%_40%] animate-[spin_40s_linear_infinite_reverse] pointer-events-none" />
                   
-                  {/* Inner Border */}
-                  <div className="absolute inset-4 border border-slate-200 pointer-events-none z-10" />
-                  <div className="absolute inset-5 border-2 border-emerald-500/20 pointer-events-none z-10" />
+                  {/* Inner Borders */}
+                  <div className="absolute inset-4 border-[0.5px] border-slate-300 pointer-events-none z-10" />
+                  <div className="absolute inset-[18px] border-[0.5px] border-slate-300 pointer-events-none z-10" />
+                  <div className="absolute inset-[24px] border-[0.5px] border-slate-300 pointer-events-none z-10" />
                   
                   {/* Corner Ornaments */}
-                  <div className="absolute top-5 left-5 w-8 h-8 border-t-2 border-l-2 border-emerald-500/40 z-10" />
-                  <div className="absolute top-5 right-5 w-8 h-8 border-t-2 border-r-2 border-emerald-500/40 z-10" />
-                  <div className="absolute bottom-5 left-5 w-8 h-8 border-b-2 border-l-2 border-emerald-500/40 z-10" />
-                  <div className="absolute bottom-5 right-5 w-8 h-8 border-b-2 border-r-2 border-emerald-500/40 z-10" />
+                  <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-slate-400 z-10" />
+                  <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-slate-400 z-10" />
+                  <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-slate-400 z-10" />
+                  <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-slate-400 z-10" />
 
                   {/* Main Content Container */}
-                  <div className="flex flex-col items-center justify-between w-full h-full z-20 relative p-6 md:p-8">
+                  <div className="flex flex-col w-full h-full z-20 relative p-8">
                     
-                    {/* Verification Tag */}
-                    {(status === 'issued' || uniqueCode) && (
-                      <div className="absolute top-0 md:top-2 left-1/2 -translate-x-1/2 w-full text-center z-20">
-                        <span className="text-[7px] md:text-[8px] text-slate-400 font-mono tracking-widest">
-                          Verify: ardent.com/verify/{uniqueCode || 'MOCK-CERT-123'}
-                        </span>
+                    {/* Header Row: Logos and Badges */}
+                    <div className="flex justify-between items-start w-full">
+                      {/* Left Logos */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-1">
+                            <div className="bg-emerald-500 rounded-full p-1 h-6 w-6 flex items-center justify-center">
+                              <Award className="text-white h-4 w-4" />
+                            </div>
+                            <span className="text-xl font-bold tracking-tight text-slate-800 uppercase font-sans">Ardent</span>
+                          </div>
+                          <div className="h-5 w-px bg-slate-300" />
+                          <div className="flex items-center gap-1">
+                            <span className="text-xl font-bold tracking-tight text-slate-800 uppercase italic font-sans text-emerald-700">Careers</span>
+                          </div>
+                        </div>
+                        <span className="text-[7px] text-slate-500 mt-1 uppercase tracking-widest">Skill Up. Level Up.</span>
                       </div>
-                    )}
 
-                    {/* Top */}
-                    <div className="flex flex-col items-center w-full mt-4 md:mt-6">
-                      <div className="flex items-center gap-2 mb-1 md:mb-2">
-                        <Award className="h-6 md:h-8 w-6 md:w-8 text-emerald-600" />
-                        <span className="text-xl md:text-2xl font-bold tracking-[0.2em] uppercase text-slate-800">Ardent</span>
+                      {/* Right Badges */}
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <div className="h-6 w-6 rounded flex items-center justify-center border border-slate-200">
+                            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[7px] text-slate-500 leading-none">Ardent for Education</span>
+                            <span className="text-[9px] font-bold text-slate-700 leading-none mt-0.5">Partner</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="h-6 w-6 rounded-full border border-emerald-500 flex items-center justify-center">
+                            <Award className="h-4 w-4 text-emerald-500" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[7px] text-slate-500 leading-none">ISO 9001-27001</span>
+                            <span className="text-[9px] font-bold text-emerald-600 leading-none mt-0.5">CERTIFIED</span>
+                          </div>
+                        </div>
                       </div>
-                      <h1 className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] text-slate-500 font-semibold">Certificate of Completion</h1>
                     </div>
 
-                    {/* Middle */}
-                    <div className="flex flex-col items-center justify-center flex-1 w-full my-1 md:my-3">
-                      <p className="text-[10px] md:text-sm text-slate-500 mb-1 md:mb-2 italic">
-                        This proudly certifies that
-                      </p>
-                      <h2 className="text-3xl md:text-5xl font-black mb-1 md:mb-3 text-center text-slate-900 tracking-tight leading-tight max-w-[90%] font-serif">
+                    {/* Middle Content */}
+                    <div className="flex flex-col items-center justify-center flex-1 w-full mt-4">
+                      <h1 className="text-3xl md:text-5xl font-bold text-slate-800 tracking-tight font-sans mb-8 md:mb-12">
+                        Certificate of Completion
+                      </h1>
+
+                      <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center text-slate-900 tracking-tight font-serif">
                         {recipientName || 'Your Name'}
                       </h2>
-                      <p className="text-[10px] md:text-xs text-slate-600 mb-1 md:mb-1.5 text-center max-w-lg leading-relaxed px-4">
-                        has successfully completed the comprehensive career roadmap and demonstrated proficiency in
+
+                      <p className="text-xs md:text-sm text-slate-600 mb-6 text-center max-w-2xl leading-relaxed px-4 font-serif italic">
+                        is hereby awarded the certificate of achievement <br/> for the successful completion of
                       </p>
-                      <h3 className="text-lg md:text-2xl font-bold text-emerald-600 text-center">
+
+                      <h3 className="text-xl md:text-3xl font-bold text-slate-800 text-center uppercase tracking-widest font-sans">
                         {roadmapTitle}
                       </h3>
                     </div>
 
-                    {/* Bottom */}
-                    <div className="w-full flex justify-between items-end px-2 md:px-8 mt-auto pb-2">
-                      <div className="flex flex-col items-center">
-                        <span className="text-[10px] md:text-sm font-bold text-slate-700 mb-1">
-                          {issuedAt 
+                    {/* Bottom Row */}
+                    <div className="w-full grid grid-cols-3 items-end mt-auto pt-8">
+                      {/* Left: Date */}
+                      <div className="flex flex-col">
+                        <span className="text-[9px] md:text-[11px] font-bold text-slate-700">
+                          Certificate issued on : {issuedAt 
                             ? new Date(issuedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) 
                             : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </span>
-                        <div className="h-px w-20 md:w-32 bg-slate-400 mb-1.5 md:mb-2" />
-                        <span className="text-[8px] md:text-[10px] text-slate-500 uppercase tracking-widest font-bold">Date Issued</span>
                       </div>
                       
+                      {/* Center: Signature */}
                       <div className="flex flex-col items-center relative">
-                        {/* Signature */}
-                        <span className="font-['Brush_Script_MT',cursive] text-2xl md:text-4xl text-emerald-700 absolute -top-2 md:-top-4 rotate-[-5deg]">Divyansh</span>
+                        <span className="font-['Brush_Script_MT',cursive] text-2xl md:text-4xl text-slate-800 absolute -top-4 md:-top-8 rotate-[-5deg]">Divyansh</span>
                         <span className="text-[10px] md:text-sm text-transparent mb-1">Divyansh</span>
-                        <div className="h-px w-20 md:w-32 bg-slate-400 mb-1.5 md:mb-2" />
-                        <span className="text-[8px] md:text-[10px] text-slate-500 uppercase tracking-widest font-bold">Founder & CEO</span>
+                        <div className="h-px w-32 md:w-48 bg-slate-400 mb-1.5 md:mb-2" />
+                        <span className="text-[10px] md:text-xs text-slate-800 font-bold">M. Divyansh</span>
+                        <span className="text-[8px] md:text-[9px] text-slate-500 mt-0.5">Founder and CEO,</span>
+                        <span className="text-[8px] md:text-[9px] text-slate-500">Ardent AI Networks.</span>
+                      </div>
+
+                      {/* Right: Verification */}
+                      <div className="flex flex-col items-end">
+                        <span className="text-[8px] md:text-[10px] text-slate-500">
+                          Valid certificate ID : <span className="font-mono text-slate-700 font-bold">{uniqueCode || 'MOCK-CERT-123'}</span>
+                        </span>
                       </div>
                     </div>
+
+                    {/* Bottom Verification Text (Very bottom) */}
+                    <div className="absolute bottom-4 left-8 text-[7px] md:text-[8px] text-slate-400">
+                      Verify certificate at: https://ardent.com/certificate?id={uniqueCode || 'MOCK-CERT-123'}
+                    </div>
+
                   </div>
                 </div>
 
