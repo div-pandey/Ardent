@@ -178,8 +178,8 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                 >
                   {/* Anti-screenshot Watermark */}
                   {status !== 'issued' && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center overflow-hidden pointer-events-none mix-blend-multiply opacity-[0.03]">
-                      <div className="transform -rotate-45 text-[150px] font-black tracking-tighter whitespace-nowrap text-slate-900 uppercase">
+                    <div className="absolute inset-0 z-50 flex items-center justify-center overflow-hidden pointer-events-none">
+                      <div className="transform -rotate-45 text-[120px] md:text-[150px] font-black tracking-tighter whitespace-nowrap text-slate-400/20 uppercase mix-blend-multiply">
                         Preview Only preview only
                       </div>
                     </div>
@@ -247,20 +247,20 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                     </div>
 
                     {/* Middle Content */}
-                    <div className="flex flex-col items-center justify-center flex-1 w-full mt-4">
-                      <h1 className="text-3xl md:text-5xl font-bold text-slate-800 tracking-tight font-sans mb-8 md:mb-12">
+                    <div className="flex flex-col items-center justify-center flex-1 w-full mt-2 md:mt-4">
+                      <h1 className="text-2xl md:text-4xl font-bold text-slate-800 tracking-tight font-sans mb-4 md:mb-6">
                         Certificate of Completion
                       </h1>
 
-                      <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center text-slate-900 tracking-tight font-serif">
+                      <h2 className="text-2xl md:text-4xl font-semibold mb-3 md:mb-4 text-center text-slate-900 tracking-tight font-serif">
                         {recipientName || 'Your Name'}
                       </h2>
 
-                      <p className="text-xs md:text-sm text-slate-600 mb-6 text-center max-w-2xl leading-relaxed px-4 font-serif italic">
+                      <p className="text-[10px] md:text-sm text-slate-600 mb-3 md:mb-4 text-center max-w-2xl leading-relaxed px-4 font-serif italic">
                         is hereby awarded the certificate of achievement <br/> for the successful completion of
                       </p>
 
-                      <h3 className="text-xl md:text-3xl font-bold text-slate-800 text-center uppercase tracking-widest font-sans">
+                      <h3 className="text-lg md:text-2xl font-bold text-slate-800 text-center uppercase tracking-widest font-sans">
                         {roadmapTitle}
                       </h3>
                     </div>
@@ -323,8 +323,8 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
           {/* Form Controls */}
           <div className="w-full md:w-64 space-y-6">
             <div>
-              <h4 className="font-bold mb-1">Issue Details</h4>
-              <p className="text-xs text-muted-foreground">This certificate validates your hard work and completion of all milestones.</p>
+              <h4 className="font-bold mb-1 text-foreground">Issue Details</h4>
+              <p className="text-xs text-foreground/70">This certificate validates your hard work and completion of all milestones.</p>
             </div>
 
             {status === 'issued' ? (
@@ -352,7 +352,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
             ) : (
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="cert-name">Recipient Name</Label>
+                  <Label htmlFor="cert-name" className="text-foreground">Recipient Name</Label>
                   <div className="t-input-wrap">
                     <div className="t-input">
                       <Input 
@@ -364,7 +364,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                       />
                     </div>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">Make sure this matches your legal name for verification purposes.</p>
+                  <p className="text-[10px] text-foreground/60">Make sure this matches your legal name for verification purposes.</p>
                 </div>
                 
                 <Button 
@@ -376,7 +376,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                   Generate & Download
                 </Button>
                 
-                <p className="text-[10px] text-center text-muted-foreground mt-2">
+                <p className="text-[10px] text-center text-foreground/60 mt-2">
                   Once generated, the certificate is permanently issued and cannot be edited.
                 </p>
               </div>
