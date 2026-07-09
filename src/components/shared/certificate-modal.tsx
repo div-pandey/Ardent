@@ -25,9 +25,53 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
   const [isProcessing, setIsProcessing] = useState(false);
   const [uniqueCode, setUniqueCode] = useState('');
   const [issuedAt, setIssuedAt] = useState('');
+  const [isScreenshotAttempt, setIsScreenshotAttempt] = useState(false);
   const certRef = useRef<HTMLDivElement>(null);
 
   const isFree = tier === 'free';
+
+  // Advanced Anti-Screenshot Measures
+  useEffect(() => {
+    if (status === 'issued' || !isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
+        e.preventDefault();
+        setIsScreenshotAttempt(true);
+        navigator.clipboard.writeText("Screenshots are strictly prohibited for unverified certificates.");
+        toast.error("Screenshot Detected", { description: "Capturing unverified certificates is prohibited." });
+        
+        setTimeout(() => setIsScreenshotAttempt(false), 3000);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
+        navigator.clipboard.writeText("Screenshots are strictly prohibited for unverified certificates.");
+      }
+    };
+
+    const handleBlur = () => {
+      // Obscure when window loses focus (Snipping tool activation)
+      setIsScreenshotAttempt(true);
+    };
+
+    const handleFocus = () => {
+      setIsScreenshotAttempt(false);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('blur', handleBlur);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [status, isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -176,12 +220,20 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                   ref={certRef}
                   className={`relative w-full aspect-[1.414/1] bg-white text-slate-900 p-8 flex flex-col overflow-hidden border-[8px] border-slate-50 shadow-inner ${status !== 'issued' ? 'select-none pointer-events-none' : ''}`}
                 >
-                  {/* Anti-screenshot Watermark - Aggressive Foreground Grid */}
+                  {/* Advanced Anti-Screenshot Blackout */}
+                  {isScreenshotAttempt && (
+                    <div className="absolute inset-0 z-[100] bg-black flex flex-col items-center justify-center">
+                      <Lock className="h-16 w-16 text-red-500 mb-4 animate-pulse" />
+                      <p className="text-red-500 font-bold text-2xl tracking-widest uppercase">Screenshots Prohibited</p>
+                    </div>
+                  )}
+
+                  {/* Anti-screenshot Watermark - Fixed Visibility */}
                   {status !== 'issued' && (
-                    <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden flex flex-col items-center justify-center opacity-30 mix-blend-overlay bg-[repeating-linear-gradient(45deg,transparent,transparent_40px,rgba(203,213,225,0.8)_40px,rgba(203,213,225,0.8)_80px)]">
+                    <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden flex flex-col items-center justify-center opacity-40 bg-[repeating-linear-gradient(45deg,transparent,transparent_40px,rgba(0,0,0,0.05)_40px,rgba(0,0,0,0.05)_80px)]">
                       {/* Diagonal Text Watermark */}
                       <div className="absolute inset-0 flex items-center justify-center transform -rotate-45">
-                        <div className="text-[60px] md:text-[80px] font-black tracking-[1em] whitespace-nowrap text-slate-800 uppercase px-20">
+                        <div className="text-[60px] md:text-[80px] font-black tracking-[0.5em] whitespace-nowrap text-black/10 uppercase px-20">
                           PREVIEW SAMPLE
                         </div>
                       </div>
