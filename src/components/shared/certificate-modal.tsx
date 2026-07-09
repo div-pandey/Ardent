@@ -178,8 +178,8 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                 >
                   {/* Anti-screenshot Watermark */}
                   {status !== 'issued' && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center overflow-hidden pointer-events-none">
-                      <div className="transform -rotate-45 text-[120px] md:text-[150px] font-black tracking-tighter whitespace-nowrap text-slate-400/20 uppercase mix-blend-multiply">
+                    <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none">
+                      <div className="transform -rotate-45 text-[120px] md:text-[150px] font-black tracking-tighter whitespace-nowrap text-slate-100 uppercase select-none">
                         Preview Only preview only
                       </div>
                     </div>
@@ -326,8 +326,8 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
           {/* Form Controls */}
           <div className="w-full md:w-64 space-y-6">
             <div>
-              <h4 className="font-bold mb-1 text-foreground">Issue Details</h4>
-              <p className="text-xs text-foreground/70">This certificate validates your hard work and completion of all milestones.</p>
+              <h4 className="font-bold mb-1">Issue Details</h4>
+              <p className="text-xs text-muted-foreground">This certificate validates your hard work and completion of all milestones.</p>
             </div>
 
             {status === 'issued' ? (
@@ -355,7 +355,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
             ) : (
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="cert-name" className="text-foreground">Recipient Name</Label>
+                  <Label htmlFor="cert-name">Recipient Name</Label>
                   <div className="t-input-wrap">
                     <div className="t-input">
                       <Input 
@@ -367,7 +367,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                       />
                     </div>
                   </div>
-                  <p className="text-[10px] text-foreground/60">Make sure this matches your legal name for verification purposes.</p>
+                  <p className="text-[10px] text-muted-foreground">Make sure this matches your legal name for verification purposes.</p>
                 </div>
                 
                 <Button 
@@ -379,7 +379,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                   Generate & Download
                 </Button>
                 
-                <p className="text-[10px] text-center text-foreground/60 mt-2">
+                <p className="text-[10px] text-center text-muted-foreground mt-2">
                   Once generated, the certificate is permanently issued and cannot be edited.
                 </p>
               </div>
