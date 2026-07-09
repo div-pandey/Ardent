@@ -146,24 +146,35 @@ Provide a text-adventure style simulation of a workday in the target role to tes
 ## 8. Completion Certificates
 
 ### Goal
-Reward users who complete 100% of their roadmap tasks with a verifiable PDF certificate.
+Reward users who complete 100% of their roadmap tasks with a verifiable PDF certificate, while strictly protecting the exclusivity of the certificate through aggressive anti-theft mechanisms for free users.
 
 ### Implementation
+
+- **Roadmap Integration (`src/app/(dashboard)/roadmap/page.tsx`)**
+  - The certificate acts as the final "milestone" in the adaptive roadmap timeline.
+  - Dynamically switches from a "Locked" state to an "Award" state based on the calculated `completedCount === totalCount` logic.
+
 - **UI & Generation (`src/components/shared/certificate-modal.tsx`)**
-  - Renders a visually complex HTML/Tailwind DOM structure natively in the browser.
+  - Renders a visually complex, high-fidelity HTML/Tailwind DOM structure natively in the browser (RedSun/Ovo-RedSun design system aesthetics).
+  - Enforces strict absolute bounding boxes (`inset-[36px]`) to ensure the design scales properly without text overflowing the decorative borders on varying screen sizes.
   - Uses `html2canvas` to capture the DOM as a high-fidelity image.
   - Uses `jsPDF` to embed the image into a landscape PDF file and trigger a download.
-  - Uses flex layouts instead of absolute positioning to prevent rendering overflow issues during capture.
+
+- **Aggressive Anti-Screenshot & Security Measures**
+  - **Clipboard Permission Gate**: Users must explicitly grant clipboard access to view the preview. If denied, the certificate is hidden behind a lock screen.
+  - **PrintScreen Interception**: Hooks into `keydown` and `keyup` events. If `PrtScn` is pressed, the screen instantly blacks out and the user's clipboard payload is forcibly overwritten with the text: *"screenshot is prohibited for unverified certificates"*, neutralizing the captured image buffer.
+  - **Snipping Tool Defeat (Blur Event)**: Listens to the `window.blur` event. When an OS-level snipping tool is activated (which steals window focus), the certificate instantly blacks out.
+  - **Visual Obfuscation**: In preview mode (`draft`), the user's Name and Verification ID are heavily blurred (`blur-[4px]`), and a `z-50` repeating diagonal grid pattern with a "PREVIEW SAMPLE" stamp overlays the entire document.
 
 - **Backend Logic (`src/app/api/certificates/route.ts`)**
-  - Validates that 100% of roadmap tasks are marked `done`.
+  - Validates that 100% of roadmap tasks are marked `done` before allowing issuance.
   - Generates a random 6-character hex string as a `unique_code`.
   - Saves the certificate record to Supabase with status `issued`.
-  - *Tier Gate:* Free users can see the certificate modal (blurred preview), but the POST request to issue/download it will fail with a 403 unless they are Pro/Max.
+  - *Tier Gate:* Free users can see the certificate modal (with all anti-screenshot measures active), but the POST request to officially issue/download it will fail with a 403 unless they are Pro/Max.
 
 - **Public Verification (`src/app/verify/[code]/page.tsx`)**
   - A publicly accessible Next.js Server Component that fetches the certificate by its unique code.
-  - Displays the recipient name, roadmap, and issue date to prove authenticity.
+  - Displays the recipient name, roadmap, and issue date to prove authenticity to employers.
 
 ---
 
