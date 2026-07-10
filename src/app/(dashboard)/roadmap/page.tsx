@@ -79,6 +79,15 @@ export default function RoadmapPage() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [markingComplete, setMarkingComplete] = useState(false);
   const [togglingTask, setTogglingTask] = useState(false);
+  const [lastTaskClickedAt, setLastTaskClickedAt] = useState<number | null>(() => {
+    // Read from localStorage immediately so the gate is active on first render
+    if (typeof window === 'undefined') return null;
+    const stored = localStorage.getItem('ardent_last_task_click');
+    return stored ? parseInt(stored, 10) : null;
+  });
+
+  // True when fewer than 24 hours have elapsed since last click
+  const is24HrCooldownActive = lastTaskClickedAt !== null && (Date.now() - lastTaskClickedAt) < 24 * 60 * 60 * 1000;
 
   // Tiers and Resources
   const [userTier, setUserTier] = useState('free');
@@ -96,10 +105,7 @@ export default function RoadmapPage() {
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const active = milestones.find((m) => m.id === activeMilestone);
 
-  const todayIST = getISTDateString();
-  const hasCompletedTaskToday = milestones.some(m => 
-    m.tasks.some(t => t.done && t.completedAt && getISTDateString(new Date(t.completedAt)) === todayIST)
-  );
+  // No IST day check needed — cooldown is purely time-based (24 h from last click)
 
   // Fetch saved roadmaps on mount
   const fetchRoadmaps = useCallback(async () => {
@@ -333,7 +339,8 @@ export default function RoadmapPage() {
   }
 
   async function handleTaskToggle(milestoneId: string, taskIndex: number) {
-    if (togglingTask) return;
+    // Hard gate: if togglingTask is true OR 24-hr cooldown is active, do nothing
+    if (togglingTask || is24HrCooldownActive) return;
     
     if (!currentRoadmapId) {
       // Fallback: local only toggle
@@ -349,7 +356,14 @@ export default function RoadmapPage() {
       return;
     }
 
-    // Optimistic update
+    // Write timestamp to localStorage IMMEDIATELY before any async work.
+    // This is the critical gate — even if the user opens two tabs or spams clicks,
+    // the timestamp is committed to storage before the first request completes.
+    const clickTimestamp = Date.now();
+    localStorage.setItem('ardent_last_task_click', String(clickTimestamp));
+    setLastTaskClickedAt(clickTimestamp);
+
+    // Lock the button
     setTogglingTask(true);
     setMilestones(prev => prev.map(m => {
       if (m.id === milestoneId) {
@@ -811,8 +825,8 @@ export default function RoadmapPage() {
                     <>
                       {active.tasks.some(t => !t.done) ? (
                         <Button
-                          className={`gap-1.5 h-10 px-5 ${hasCompletedTaskToday ? 'opacity-50' : ''}`}
-                          disabled={togglingTask || hasCompletedTaskToday}
+                          className="gap-1.5 h-10 px-5"
+                          disabled={togglingTask || is24HrCooldownActive}
                           onClick={() => {
                             const nextIndex = active.tasks.findIndex(t => !t.done);
                             if (nextIndex !== -1) handleTaskToggle(active.id, nextIndex);
@@ -823,7 +837,7 @@ export default function RoadmapPage() {
                           ) : (
                             <CheckCircle2 className="h-4 w-4 text-emerald-300" />
                           )}
-                          {hasCompletedTaskToday ? "Done for Today" : "Complete Today's Goal"}
+                          {is24HrCooldownActive ? 'Done for Today — Come Back Tomorrow' : togglingTask ? 'Saving...' : "Complete Today's Goal"}
                         </Button>
                       ) : (
                         <Button
