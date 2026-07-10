@@ -228,11 +228,11 @@ export default function GuidePage() {
 
               {conversations.map((c) => (
                 <div key={c.id} className="group relative flex items-center">
-                  <button onClick={() => loadConversation(c.id)} className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${c.id === currentChatId ? 'bg-accent' : 'hover:bg-muted/50'}`}>
+                  <button onClick={() => loadConversation(c.id)} className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors ${c.id === currentChatId ? 'bg-primary/10' : 'hover:bg-muted/50'}`}>
                     <MessageSquare className={`h-4 w-4 shrink-0 ${c.id === currentChatId ? 'text-primary' : 'text-muted-foreground'}`} />
                     <div className="min-w-0 flex-1 pr-6">
                       <p className={`truncate text-sm ${c.id === currentChatId ? 'font-semibold text-foreground' : 'font-medium text-muted-foreground'}`}>{c.title}</p>
-                      <p className="text-xs text-muted-foreground">{c.date} · {c.messages.length} msgs</p>
+                      <p className={`text-xs ${c.id === currentChatId ? 'text-primary/70' : 'text-muted-foreground'}`}>{c.date} · {c.messages.length} msgs</p>
                     </div>
                   </button>
                   <Button
@@ -257,8 +257,8 @@ export default function GuidePage() {
           <Button variant="ghost" size="icon" className="hidden h-8 w-8 md:inline-flex" onClick={() => setSidebarOpen(!sidebarOpen)}>
             {sidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
           </Button>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-            <Compass className="h-4 w-4 text-primary" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 overflow-hidden">
+            <img src="/favicon.ico" alt="Ardent Guide" className="h-5 w-5 object-contain" />
           </div>
           <div className="flex-1">
             <h1 className="text-sm font-semibold">Ardent Guide</h1>
@@ -278,8 +278,8 @@ export default function GuidePage() {
                 className={`flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}
               >
                 <Avatar className="h-8 w-8 shrink-0 border border-border">
-                  <AvatarFallback className={m.role === 'assistant' ? 'bg-primary/10 text-primary' : 'bg-muted text-foreground'}>
-                    {m.role === 'assistant' ? <Sparkles className="h-4 w-4" /> : <User className="h-4 w-4" />}
+                  <AvatarFallback className={m.role === 'assistant' ? 'bg-primary/10 text-primary p-1.5' : 'bg-muted text-foreground'}>
+                    {m.role === 'assistant' ? <img src="/favicon.ico" alt="Ardent Guide" className="h-full w-full object-contain" /> : <User className="h-4 w-4" />}
                   </AvatarFallback>
                 </Avatar>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[75%] ${
@@ -303,7 +303,7 @@ export default function GuidePage() {
             {isTyping && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-3">
                 <Avatar className="h-8 w-8 shrink-0">
-                  <AvatarFallback className="bg-primary/10 text-primary"><Sparkles className="h-4 w-4" /></AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 text-primary p-1.5"><img src="/favicon.ico" alt="Ardent Guide" className="h-full w-full object-contain" /></AvatarFallback>
                 </Avatar>
                 <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-muted border border-border px-4 py-3">
                   <div className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/40 [animation-delay:0ms]" />
