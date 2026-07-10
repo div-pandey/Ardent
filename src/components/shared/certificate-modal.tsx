@@ -382,6 +382,8 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                       </div>
                     </div>
                   </div>
+                  {/* End certRef div */}
+                </div>
                 )}
 
                 {isFree && (

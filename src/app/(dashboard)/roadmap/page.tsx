@@ -346,11 +346,10 @@ export default function RoadmapPage() {
   }
 
   async function handleTaskToggle(milestoneId: string, taskIndex: number) {
-    // Hard gate: if togglingTask is true OR 24-hr cooldown is active, do nothing
-    if (togglingTask || is24HrCooldownActive) return;
-    
+    if (togglingTask) return;
+
     if (!currentRoadmapId) {
-      // Fallback: local only toggle
+      // Fallback: local only toggle (no roadmap saved yet)
       setMilestones(prev => prev.map(m => {
         if (m.id === milestoneId) {
           const newTasks = [...m.tasks];
@@ -363,15 +362,8 @@ export default function RoadmapPage() {
       return;
     }
 
-    // Write timestamp to localStorage IMMEDIATELY before any async work.
-    // This is the critical gate — even if the user opens two tabs or spams clicks,
-    // the timestamp is committed to storage before the first request completes.
-    const clickTimestamp = Date.now();
-    localStorage.setItem('ardent_last_task_click', String(clickTimestamp));
-    setLastTaskClickedAt(clickTimestamp);
-
-    // Lock the button
     setTogglingTask(true);
+    // Optimistic update
     setMilestones(prev => prev.map(m => {
       if (m.id === milestoneId) {
         const newTasks = [...m.tasks];
@@ -390,8 +382,6 @@ export default function RoadmapPage() {
       const json = await res.json();
       if (json.success && json.milestones) {
         setMilestones(json.milestones);
-
-        // Check if all tasks just completed
         const milestone = json.milestones.find((m: any) => m.id === milestoneId);
         if (milestone?.status === 'completed') {
           toast.success('🎯 All daily goals complete — milestone finished!');
@@ -410,7 +400,6 @@ export default function RoadmapPage() {
       }
     } catch (e) {
       console.error('Task toggle failed:', e);
-      // Revert optimistic update on crash
       setMilestones(prev => prev.map(m => {
         if (m.id === milestoneId) {
           const newTasks = [...m.tasks];
