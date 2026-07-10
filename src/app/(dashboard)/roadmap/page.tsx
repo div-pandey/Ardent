@@ -79,15 +79,24 @@ export default function RoadmapPage() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [markingComplete, setMarkingComplete] = useState(false);
   const [togglingTask, setTogglingTask] = useState(false);
-  const [lastTaskClickedAt, setLastTaskClickedAt] = useState<number | null>(() => {
-    // Read from localStorage immediately so the gate is active on first render
+
+  // IST date string helper
+  const getTodayIST = () =>
+    new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+    }).format(new Date());
+
+  // Read the date the user last clicked "Mark Today's Goal" from localStorage.
+  // If it equals today's IST date, the button is hidden for the rest of the day.
+  const [goalCompletedDateIST, setGoalCompletedDateIST] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
-    const stored = localStorage.getItem('ardent_last_task_click');
-    return stored ? parseInt(stored, 10) : null;
+    return localStorage.getItem('ardent_goal_date_ist') ?? null;
   });
 
-  // True when fewer than 24 hours have elapsed since last click
-  const is24HrCooldownActive = lastTaskClickedAt !== null && (Date.now() - lastTaskClickedAt) < 24 * 60 * 60 * 1000;
+  const todayIST = getTodayIST();
+  // Button is locked for today if the stored date matches today's IST date
+  const goalDoneToday = goalCompletedDateIST === todayIST;
 
   // Tiers and Resources
   const [userTier, setUserTier] = useState('free');
@@ -104,8 +113,6 @@ export default function RoadmapPage() {
   const totalCount = milestones.length;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const active = milestones.find((m) => m.id === activeMilestone);
-
-  // No IST day check needed — cooldown is purely time-based (24 h from last click)
 
   // Fetch saved roadmaps on mount
   const fetchRoadmaps = useCallback(async () => {
@@ -419,25 +426,23 @@ export default function RoadmapPage() {
   }
 
   /**
-   * Dedicated handler for the "Complete Today's Goal" button.
-   * Sets the 24-hr cooldown lock SYNCHRONOUSLY (before any await)
-   * so no amount of rapid clicking can fire a second request.
+   * Dedicated handler for the "Mark Today's Goal as Completed" button.
+   * Commits the IST date to localStorage SYNCHRONOUSLY before any async work,
+   * so no amount of rapid clicking can fire a second request today.
    */
   async function handleCompleteGoal(milestoneId: string) {
-    // Already locked — bail immediately
-    if (togglingTask || is24HrCooldownActive || !currentRoadmapId) return;
+    if (togglingTask || goalDoneToday || !currentRoadmapId) return;
 
-    // Find the next incomplete task
     const milestone = milestones.find(m => m.id === milestoneId);
     if (!milestone) return;
     const taskIndex = milestone.tasks.findIndex(t => !t.done);
     if (taskIndex === -1) return;
 
-    // ── CRITICAL: commit the lock to localStorage BEFORE any async work ──
-    const clickTimestamp = Date.now();
-    localStorage.setItem('ardent_last_task_click', String(clickTimestamp));
-    setLastTaskClickedAt(clickTimestamp); // triggers re-render → button disables
-    setTogglingTask(true);               // show spinner
+    // ── Commit IST date IMMEDIATELY — this hides the button on re-render ──
+    const dateStr = getTodayIST();
+    localStorage.setItem('ardent_goal_date_ist', dateStr);
+    setGoalCompletedDateIST(dateStr); // button disappears on next render
+    setTogglingTask(true);
 
     // Optimistic UI update
     setMilestones(prev => prev.map(m => {
@@ -462,10 +467,10 @@ export default function RoadmapPage() {
         if (updated?.status === 'completed') {
           toast.success('🎯 All daily goals complete — milestone finished!');
         } else {
-          toast.success('✅ Goal marked complete! Come back tomorrow for the next one.');
+          toast.success('✅ Goal marked! Come back tomorrow for the next one.');
         }
       } else if (json.error) {
-        // Revert optimistic update
+        // Revert optimistic update and unlock the button
         setMilestones(prev => prev.map(m => {
           if (m.id === milestoneId) {
             const newTasks = [...m.tasks];
@@ -474,13 +479,11 @@ export default function RoadmapPage() {
           }
           return m;
         }));
-        // Also revert the cooldown lock if the API rejected it
-        localStorage.removeItem('ardent_last_task_click');
-        setLastTaskClickedAt(null);
+        localStorage.removeItem('ardent_goal_date_ist');
+        setGoalCompletedDateIST(null);
         toast.error(json.error);
       }
     } catch (e) {
-      // Revert optimistic update on network failure
       setMilestones(prev => prev.map(m => {
         if (m.id === milestoneId) {
           const newTasks = [...m.tasks];
@@ -489,11 +492,11 @@ export default function RoadmapPage() {
         }
         return m;
       }));
-      localStorage.removeItem('ardent_last_task_click');
-      setLastTaskClickedAt(null);
+      localStorage.removeItem('ardent_goal_date_ist');
+      setGoalCompletedDateIST(null);
       toast.error('Network error. Please try again.');
     } finally {
-      setTogglingTask(false); // remove spinner — button stays disabled via is24HrCooldownActive
+      setTogglingTask(false);
     }
   }
 
@@ -868,11 +871,10 @@ export default function RoadmapPage() {
                     <button
                       key={i}
                       onClick={() => handleTaskToggle(active.id, i)}
-                      // Prevent marking tasks DONE during cooldown; still allow unchecking
-                      disabled={active.status === 'locked' || (!task.done && is24HrCooldownActive)}
+                      disabled={active.status === 'locked'}
                       className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-left transition-all hover:bg-muted/40 ${
                         task.done ? 'bg-emerald-400/5' : 'bg-muted/20'
-                      } ${(active.status === 'locked' || (!task.done && is24HrCooldownActive)) ? 'cursor-not-allowed opacity-50' : ''}`}
+                      } ${active.status === 'locked' ? 'cursor-not-allowed opacity-50' : ''}`}
                     >
                       {task.done ? (
                         <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
@@ -903,10 +905,11 @@ export default function RoadmapPage() {
                 <div className="mt-5 flex flex-wrap gap-3">
                   {active.status === 'in_progress' && (
                     <>
-                      {active.tasks.some(t => !t.done) ? (
+                      {/* Show "Mark Today's Goal" ONLY when tasks remain AND goal not done today */}
+                      {active.tasks.some(t => !t.done) && !goalDoneToday && (
                         <Button
                           className="gap-1.5 h-10 px-5"
-                          disabled={togglingTask || is24HrCooldownActive}
+                          disabled={togglingTask}
                           onClick={() => handleCompleteGoal(active.id)}
                         >
                           {togglingTask ? (
@@ -914,9 +917,11 @@ export default function RoadmapPage() {
                           ) : (
                             <CheckCircle2 className="h-4 w-4 text-emerald-300" />
                           )}
-                          {togglingTask ? 'Saving...' : is24HrCooldownActive ? "Done for Today" : "Complete Today's Goal"}
+                          {togglingTask ? 'Saving...' : "Mark Today's Goal as Completed"}
                         </Button>
-                      ) : (
+                      )}
+                      {/* Show "Mark Milestone Complete" only when ALL tasks are done */}
+                      {!active.tasks.some(t => !t.done) && (
                         <Button
                           className="gap-1.5 h-10 px-5"
                           disabled={markingComplete}
