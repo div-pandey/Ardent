@@ -127,7 +127,7 @@ export async function findCareerPaths(
   const cypher = `
     // 1. Find all paths between current and target
     MATCH path = (start:Role)-[:LEADS_TO*1..${maxDepth}]->(end:Role)
-    WHERE toLower(start.name) = toLower($currentRole) AND toLower(end.name) = toLower($targetRole)
+    WHERE toLower(start.name) = toLower($currentRole) AND toLower(end.name) = toLower($normalizedTargetRole)
     
     // 2. Identify the immediate next role in the path to calculate readiness for it
     WITH path, 
@@ -171,7 +171,7 @@ export async function findCareerPaths(
     difficulty: string;
     skillOverlapPercent: { low: number } | number;
     keyNewSkills: string[];
-  }>(cypher, { userId, currentRole, targetRole });
+  }>(cypher, { userId, currentRole, normalizedTargetRole: normalizeRoleName(targetRole) });
 
   return records.map((record, index) => ({
     name: `Route ${index + 1}: ${record.roleNames.slice(1, -1).join(' → ') || 'Direct'}`,
@@ -196,9 +196,9 @@ export async function analyzeSkillGap(
     WITH collect(userSkill.name) AS userSkills
     
     MATCH (target:Role)-[req:REQUIRES_SKILL]->(required:Skill)
-    WHERE toLower(target.name) = toLower($targetRole)
-       OR toLower(target.name) CONTAINS toLower($targetRole)
-       OR toLower($targetRole) CONTAINS toLower(target.name)
+    WHERE toLower(target.name) = toLower($normalizedTargetRole)
+       OR toLower(target.name) CONTAINS toLower($normalizedTargetRole)
+       OR toLower($normalizedTargetRole) CONTAINS toLower(target.name)
     
     WITH userSkills, 
          collect({
@@ -221,7 +221,7 @@ export async function analyzeSkillGap(
       estimatedHours: number;
       importance: string;
     }[];
-  }>(cypher, { userId, targetRole });
+  }>(cypher, { userId, normalizedTargetRole: normalizeRoleName(targetRole) });
 
   if (records.length === 0) {
     return {
@@ -278,9 +278,9 @@ export async function getSkillRecommendations(
 ): Promise<SkillRecommendation[]> {
   const cypher = `
     MATCH (target:Role)-[req:REQUIRES_SKILL]->(skill:Skill)
-    WHERE (toLower(target.name) = toLower($targetRole) 
-       OR toLower(target.name) CONTAINS toLower($targetRole)
-       OR toLower($targetRole) CONTAINS toLower(target.name))
+    WHERE (toLower(target.name) = toLower($normalizedTargetRole) 
+       OR toLower(target.name) CONTAINS toLower($normalizedTargetRole)
+       OR toLower($normalizedTargetRole) CONTAINS toLower(target.name))
     AND NOT EXISTS {
       MATCH (u:User {userId: $userId})-[:HAS_SKILL]->(skill)
     }
@@ -296,7 +296,29 @@ export async function getSkillRecommendations(
     LIMIT $limit
   `;
 
-  return readQuery<SkillRecommendation>(cypher, { userId, targetRole, limit });
+  return readQuery<SkillRecommendation>(cypher, { userId, normalizedTargetRole: normalizeRoleName(targetRole), limit });
+}
+
+// Helper to normalize user inputted role names to our seed data roles
+function normalizeRoleName(role: string): string {
+  if (!role) return role;
+  const r = role.toLowerCase();
+  if (r.includes('full stack') || r.includes('fullstack')) return 'Full Stack Developer';
+  if (r.includes('front end') || r.includes('frontend')) return 'Frontend Developer';
+  if (r.includes('back end') || r.includes('backend')) return 'Backend Developer';
+  if (r.includes('data sci')) return 'Data Scientist';
+  if (r.includes('data eng')) return 'Data Engineer';
+  if (r.includes('data anal')) return 'Data Analyst';
+  if (r.includes('machine learning') || r.includes('ml ')) return 'ML Engineer';
+  if (r.includes('ai ') || r.includes('artificial intelligence')) return 'AI Engineer';
+  if (r.includes('product man')) return 'Product Manager';
+  if (r.includes('ui') || r.includes('ux') || r.includes('designer')) return 'UX Designer';
+  if (r.includes('mobile') || r.includes('ios') || r.includes('android')) return 'Mobile Developer';
+  if (r.includes('devops') || r.includes('site reliability') || r.includes('sre')) return 'DevOps Engineer';
+  if (r.includes('cloud')) return 'Cloud Architect';
+  if (r.includes('security') || r.includes('cyber')) return 'Cybersecurity Analyst';
+  if (r.includes('qa ') || r.includes('test')) return 'QA Engineer';
+  return role;
 }
 
 // Helper to sanitize Neo4j Integers into plain JS numbers
