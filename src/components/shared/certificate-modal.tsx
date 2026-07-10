@@ -196,7 +196,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-5xl bg-card rounded-2xl border border-border shadow-2xl overflow-hidden flex flex-col max-h-[95vh]"
+        className="relative w-full max-w-7xl bg-card rounded-2xl border border-border shadow-2xl overflow-hidden flex flex-col max-h-[95vh]"
       >
         <div className="flex items-center justify-between p-4 border-b border-border/50 bg-muted/30">
           <h3 className="font-bold text-lg flex items-center gap-2">
@@ -210,7 +210,7 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
         <div className="flex-1 overflow-y-auto p-6 flex flex-col md:flex-row gap-8 items-start">
           
           {/* Certificate Preview */}
-          <div className="flex-1 w-full max-w-[800px] mx-auto shrink-0 relative rounded-xl overflow-hidden border border-border bg-background shadow-2xl isolate">
+          <div className="flex-1 w-full max-w-[1000px] mx-auto shrink-0 relative rounded-xl overflow-hidden border border-border bg-background shadow-2xl isolate">
             {status === 'loading' ? (
               <div className="h-[400px] flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
