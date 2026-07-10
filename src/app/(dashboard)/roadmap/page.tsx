@@ -43,7 +43,7 @@ interface DemoMilestone {
   weekRange: string;
   status: 'completed' | 'in_progress' | 'locked';
   skills: string[];
-  tasks: { title: string; done: boolean }[];
+  tasks: { title: string; done: boolean; completedAt?: string }[];
   project: string;
 }
 
@@ -78,6 +78,7 @@ export default function RoadmapPage() {
   const [currentRoadmapId, setCurrentRoadmapId] = useState<string | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const [markingComplete, setMarkingComplete] = useState(false);
+  const [togglingTask, setTogglingTask] = useState(false);
 
   // Tiers and Resources
   const [userTier, setUserTier] = useState('free');
@@ -86,10 +87,19 @@ export default function RoadmapPage() {
   const [milestoneResources, setMilestoneResources] = useState<any[]>([]);
   const [loadingResources, setLoadingResources] = useState(false);
 
+  const getISTDateString = (date = new Date()) => {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+  };
+
   const completedCount = milestones.filter((m) => m.status === 'completed').length;
   const totalCount = milestones.length;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
   const active = milestones.find((m) => m.id === activeMilestone);
+
+  const todayIST = getISTDateString();
+  const hasCompletedTaskToday = milestones.some(m => 
+    m.tasks.some(t => t.done && t.completedAt && getISTDateString(new Date(t.completedAt)) === todayIST)
+  );
 
   // Fetch saved roadmaps on mount
   const fetchRoadmaps = useCallback(async () => {
@@ -323,6 +333,8 @@ export default function RoadmapPage() {
   }
 
   async function handleTaskToggle(milestoneId: string, taskIndex: number) {
+    if (togglingTask) return;
+    
     if (!currentRoadmapId) {
       // Fallback: local only toggle
       setMilestones(prev => prev.map(m => {
@@ -338,6 +350,7 @@ export default function RoadmapPage() {
     }
 
     // Optimistic update
+    setTogglingTask(true);
     setMilestones(prev => prev.map(m => {
       if (m.id === milestoneId) {
         const newTasks = [...m.tasks];
@@ -386,6 +399,8 @@ export default function RoadmapPage() {
         return m;
       }));
       toast.error('Network error.');
+    } finally {
+      setTogglingTask(false);
     }
   }
 
@@ -796,14 +811,19 @@ export default function RoadmapPage() {
                     <>
                       {active.tasks.some(t => !t.done) ? (
                         <Button
-                          className="gap-1.5 h-10 px-5"
+                          className={`gap-1.5 h-10 px-5 ${hasCompletedTaskToday ? 'opacity-50' : ''}`}
+                          disabled={togglingTask || hasCompletedTaskToday}
                           onClick={() => {
                             const nextIndex = active.tasks.findIndex(t => !t.done);
                             if (nextIndex !== -1) handleTaskToggle(active.id, nextIndex);
                           }}
                         >
-                          <CheckCircle2 className="h-4 w-4 text-emerald-300" />
-                          Complete Today's Goal
+                          {togglingTask ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-emerald-300" />
+                          ) : (
+                            <CheckCircle2 className="h-4 w-4 text-emerald-300" />
+                          )}
+                          {hasCompletedTaskToday ? "Done for Today" : "Complete Today's Goal"}
                         </Button>
                       ) : (
                         <Button
