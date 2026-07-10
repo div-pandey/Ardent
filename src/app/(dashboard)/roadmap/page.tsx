@@ -418,6 +418,85 @@ export default function RoadmapPage() {
     }
   }
 
+  /**
+   * Dedicated handler for the "Complete Today's Goal" button.
+   * Sets the 24-hr cooldown lock SYNCHRONOUSLY (before any await)
+   * so no amount of rapid clicking can fire a second request.
+   */
+  async function handleCompleteGoal(milestoneId: string) {
+    // Already locked — bail immediately
+    if (togglingTask || is24HrCooldownActive || !currentRoadmapId) return;
+
+    // Find the next incomplete task
+    const milestone = milestones.find(m => m.id === milestoneId);
+    if (!milestone) return;
+    const taskIndex = milestone.tasks.findIndex(t => !t.done);
+    if (taskIndex === -1) return;
+
+    // ── CRITICAL: commit the lock to localStorage BEFORE any async work ──
+    const clickTimestamp = Date.now();
+    localStorage.setItem('ardent_last_task_click', String(clickTimestamp));
+    setLastTaskClickedAt(clickTimestamp); // triggers re-render → button disables
+    setTogglingTask(true);               // show spinner
+
+    // Optimistic UI update
+    setMilestones(prev => prev.map(m => {
+      if (m.id === milestoneId) {
+        const newTasks = [...m.tasks];
+        newTasks[taskIndex] = { ...newTasks[taskIndex], done: true };
+        return { ...m, tasks: newTasks };
+      }
+      return m;
+    }));
+
+    try {
+      const res = await fetch('/api/roadmap', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'toggle_task', roadmapId: currentRoadmapId, milestoneId, taskIndex }),
+      });
+      const json = await res.json();
+      if (json.success && json.milestones) {
+        setMilestones(json.milestones);
+        const updated = json.milestones.find((m: any) => m.id === milestoneId);
+        if (updated?.status === 'completed') {
+          toast.success('🎯 All daily goals complete — milestone finished!');
+        } else {
+          toast.success('✅ Goal marked complete! Come back tomorrow for the next one.');
+        }
+      } else if (json.error) {
+        // Revert optimistic update
+        setMilestones(prev => prev.map(m => {
+          if (m.id === milestoneId) {
+            const newTasks = [...m.tasks];
+            newTasks[taskIndex] = { ...newTasks[taskIndex], done: false };
+            return { ...m, tasks: newTasks };
+          }
+          return m;
+        }));
+        // Also revert the cooldown lock if the API rejected it
+        localStorage.removeItem('ardent_last_task_click');
+        setLastTaskClickedAt(null);
+        toast.error(json.error);
+      }
+    } catch (e) {
+      // Revert optimistic update on network failure
+      setMilestones(prev => prev.map(m => {
+        if (m.id === milestoneId) {
+          const newTasks = [...m.tasks];
+          newTasks[taskIndex] = { ...newTasks[taskIndex], done: false };
+          return { ...m, tasks: newTasks };
+        }
+        return m;
+      }));
+      localStorage.removeItem('ardent_last_task_click');
+      setLastTaskClickedAt(null);
+      toast.error('Network error. Please try again.');
+    } finally {
+      setTogglingTask(false); // remove spinner — button stays disabled via is24HrCooldownActive
+    }
+  }
+
   function handleViewRoadmap(roadmap: SavedRoadmap) {
     setMilestones(roadmap.milestones_data || []);
     setActiveMilestone(roadmap.milestones_data?.[0]?.id || '');
@@ -789,10 +868,11 @@ export default function RoadmapPage() {
                     <button
                       key={i}
                       onClick={() => handleTaskToggle(active.id, i)}
-                      disabled={active.status === 'locked'}
+                      // Prevent marking tasks DONE during cooldown; still allow unchecking
+                      disabled={active.status === 'locked' || (!task.done && is24HrCooldownActive)}
                       className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-left transition-all hover:bg-muted/40 ${
                         task.done ? 'bg-emerald-400/5' : 'bg-muted/20'
-                      } ${active.status === 'locked' ? 'cursor-not-allowed opacity-50' : ''}`}
+                      } ${(active.status === 'locked' || (!task.done && is24HrCooldownActive)) ? 'cursor-not-allowed opacity-50' : ''}`}
                     >
                       {task.done ? (
                         <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
@@ -827,17 +907,14 @@ export default function RoadmapPage() {
                         <Button
                           className="gap-1.5 h-10 px-5"
                           disabled={togglingTask || is24HrCooldownActive}
-                          onClick={() => {
-                            const nextIndex = active.tasks.findIndex(t => !t.done);
-                            if (nextIndex !== -1) handleTaskToggle(active.id, nextIndex);
-                          }}
+                          onClick={() => handleCompleteGoal(active.id)}
                         >
                           {togglingTask ? (
                             <Loader2 className="h-4 w-4 animate-spin text-emerald-300" />
                           ) : (
                             <CheckCircle2 className="h-4 w-4 text-emerald-300" />
                           )}
-                          {is24HrCooldownActive ? 'Done for Today — Come Back Tomorrow' : togglingTask ? 'Saving...' : "Complete Today's Goal"}
+                          {togglingTask ? 'Saving...' : is24HrCooldownActive ? "Done for Today" : "Complete Today's Goal"}
                         </Button>
                       ) : (
                         <Button
