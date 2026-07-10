@@ -253,16 +253,15 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
                     </div>
                   )}
 
-                  {/* Anti-screenshot Watermark - Fixed Visibility */}
+                  {/* Anti-screenshot Watermark - Repeating Small Text Pattern */}
                   {status !== 'issued' && (
-                    <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden flex flex-col items-center justify-center opacity-40 bg-[repeating-linear-gradient(45deg,transparent,transparent_40px,rgba(0,0,0,0.05)_40px,rgba(0,0,0,0.05)_80px)]">
-                      {/* Diagonal Text Watermark */}
-                      <div className="absolute inset-0 flex items-center justify-center transform -rotate-45">
-                        <div className="text-[60px] md:text-[80px] font-black tracking-[0.5em] whitespace-nowrap text-black/10 uppercase px-20">
-                          PREVIEW SAMPLE
-                        </div>
-                      </div>
-                    </div>
+                    <div 
+                      className="absolute inset-0 z-50 pointer-events-none opacity-60 mix-blend-multiply"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='rotate(-35 60 60)'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='9' font-weight='bold' fill='rgba(0, 0, 0, 0.15)' letter-spacing='1'%3EPREVIEW SAMPLE%3C/text%3E%3C/g%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'repeat'
+                      }}
+                    />
                   )}
 
                   {/* Background Accents - Subtle wave pattern simulation */}
