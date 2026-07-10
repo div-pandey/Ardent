@@ -118,6 +118,19 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
     }
   }
 
+  // pendingDownload ref — set to true after issuing so useEffect can trigger
+  // the PDF capture only AFTER React commits the unblurred DOM to screen.
+  const pendingDownload = useRef(false);
+
+  // Fires after every render where status === 'issued' and a download is pending.
+  // This guarantees html2canvas sees the real, un-blurred certificate DOM.
+  useEffect(() => {
+    if (status === 'issued' && pendingDownload.current) {
+      pendingDownload.current = false;
+      downloadPDF();
+    }
+  });
+
   async function handleIssueAndDownload() {
     if (isFree) {
       toast.error('Certificates are only available on Pro or Max plans.');
@@ -138,14 +151,16 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
         });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
-        
-        setStatus('issued');
+
         setUniqueCode(data.certificate.unique_code);
         setIssuedAt(data.certificate.issued_at);
+        // Mark that we want to download once the issued DOM has rendered
+        pendingDownload.current = true;
+        setStatus('issued'); // triggers re-render → blur classes removed → useEffect fires downloadPDF
+      } else {
+        // Already issued — capture immediately (DOM is already unblurred)
+        await downloadPDF();
       }
-
-      // Allow state to settle for render
-      setTimeout(() => downloadPDF(), 500);
     } catch (e: any) {
       toast.error(e.message || 'Failed to generate certificate');
       setIsProcessing(false);
@@ -153,28 +168,37 @@ export function CertificateModal({ isOpen, onClose, roadmapId, roadmapTitle, tie
   }
 
   async function downloadPDF() {
-    if (!certRef.current) return;
-    
+    if (!certRef.current) {
+      setIsProcessing(false);
+      return;
+    }
+
     try {
+      // Small rAF delay to let browser paint the updated DOM before capture
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
       const canvas = await html2canvas(certRef.current, {
         scale: 3,
-        backgroundColor: '#0a0a0b',
+        backgroundColor: '#ffffff', // white background — matches the white certificate
         useCORS: true,
+        logging: false,
+        removeContainer: true,
       });
-      
+
       const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'px',
-        format: [canvas.width / 3, canvas.height / 3]
+        format: [canvas.width / 3, canvas.height / 3],
       });
-      
+
       pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 3, canvas.height / 3);
       pdf.save(`Ardent_Certificate_${roadmapTitle.replace(/\s+/g, '_')}.pdf`);
-      
+
       toast.success('Certificate downloaded successfully!');
     } catch (e) {
-      toast.error('Failed to create PDF');
+      console.error('[Certificate] PDF generation failed:', e);
+      toast.error('Failed to create PDF. Please try again.');
     } finally {
       setIsProcessing(false);
     }
