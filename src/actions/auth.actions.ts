@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 export async function loginAction(formData: FormData) {
   const supabase = await createClient();
@@ -84,8 +85,7 @@ export async function updateProfile(data: {
 
   const { error } = await supabase
     .from('profiles')
-    .update(profileData)
-    .eq('id', user.id);
+    .upsert({ id: user.id, ...profileData });
 
   if (error) return { error: error.message };
   
@@ -112,5 +112,6 @@ export async function updateProfile(data: {
     }
   }
 
+  revalidatePath('/', 'layout');
   return { success: true };
 }
