@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useInView, animate } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useState, useEffect, MouseEvent } from 'react';
-import { Sparkles, Route, Map as MapIcon, Compass, Zap, Shield, ArrowRight, Check, Mail, Target, User, Sun, Moon, Mic, Trophy, Briefcase, BarChart3, FileText } from 'lucide-react';
+import { Sparkles, Route, Map as MapIcon, Compass, Zap, Shield, ArrowRight, Check, Mail, Target, User, Sun, Moon, Mic, Trophy, Briefcase, BarChart3, FileText, Network, Users, Coffee, BookOpen, Swords } from 'lucide-react';
 import { TiltCard } from '@/components/ui/tilt-card';
 import { Magnetic } from '@/components/ui/magnetic';
 import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
@@ -12,12 +12,12 @@ import { toast } from 'sonner';
 const ease = [0.16, 1, 0.3, 1] as any;
 
 const features = [
-  { icon: Sparkles, title: 'Career Graph', desc: 'A 3D force-directed visualization mapping your skills, roles, and gaps in real time.', impact: 'Visualize the invisible.' },
+  { icon: Network, title: 'Career Graph', desc: 'A 3D force-directed visualization mapping your skills, roles, and gaps in real time.', impact: 'Visualize the invisible.' },
   { icon: MapIcon, title: 'AI Roadmaps', desc: 'Personalized weekly milestones generated from your exact skill gap analysis.', impact: 'Actionable curricula.' },
-  { icon: Compass, title: 'Ardent Guide', desc: 'An AI mentor with full context of your graph, roadmap, and career goals.', impact: 'Context-aware advice.' },
-  { icon: Mic, title: 'Mock Interviews', desc: 'AI-driven technical and behavioral interviews tailored to your target role.', impact: 'Confidence before the call.' },
-  { icon: Route, title: 'Day-in-the-Life', desc: 'Text-based workplace simulations that test real-world problem solving.', impact: 'Practice before reality.' },
-  { icon: Trophy, title: 'Daily Challenges', desc: 'Bite-sized tasks aligned to your learning path to build streaks and momentum.', impact: 'Consistent growth.' },
+  { icon: BookOpen, title: 'Ardent Guide', desc: 'An AI mentor with full context of your graph, roadmap, and career goals.', impact: 'Context-aware advice.' },
+  { icon: Users, title: 'Mock Interviews', desc: 'AI-driven technical and behavioral interviews tailored to your target role.', impact: 'Confidence before the call.' },
+  { icon: Coffee, title: 'Day-in-the-Life', desc: 'Text-based workplace simulations that test real-world problem solving.', impact: 'Practice before reality.' },
+  { icon: Swords, title: 'Daily Challenges', desc: 'Bite-sized tasks aligned to your learning path to build streaks and momentum.', impact: 'Consistent growth.' },
   { icon: FileText, title: 'ATS Resume Builder', desc: 'A step-by-step form that outputs clean, machine-readable resumes for ATS parsers.', impact: 'Pass the screeners.' },
   { icon: Briefcase, title: 'Job Matches', desc: 'Curated opportunities matched to your skill graph with a readiness percentage.', impact: 'Apply with clarity.' },
   { icon: BarChart3, title: 'Progress Tracking', desc: 'Streaks, skill acquisition rates, and milestone completion analytics over time.', impact: 'Measure what matters.' },
