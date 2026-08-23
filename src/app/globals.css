@@ -640,6 +640,29 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* View Transitions for Theme Toggle */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* Light -> Dark (Light collapses, so Light (old) is on top) */
+  .theme-transition-to-dark::view-transition-old(root) {
+    z-index: 2;
+  }
+  .theme-transition-to-dark::view-transition-new(root) {
+    z-index: 1;
+  }
+
+  /* Dark -> Light (Light expands, so Light (new) is on top) */
+  .theme-transition-to-light::view-transition-old(root) {
+    z-index: 1;
+  }
+  .theme-transition-to-light::view-transition-new(root) {
+    z-index: 2;
+  }
+
   /* Custom Pill Scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;

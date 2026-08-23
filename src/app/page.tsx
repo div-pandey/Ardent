@@ -306,7 +306,47 @@ export default function LandingPage() {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    const isDark = theme === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    const x = window.innerWidth / 2;
+    const y = window.innerHeight / 2;
+    const maxRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+    document.documentElement.classList.remove('theme-transition-to-dark', 'theme-transition-to-light');
+    document.documentElement.classList.add(isDark ? 'theme-transition-to-light' : 'theme-transition-to-dark');
+
+    const transition = document.startViewTransition(() => {
+      setTheme(newTheme);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${maxRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: isDark ? clipPath : [...clipPath].reverse(),
+          filter: isDark ? ['blur(20px)', 'blur(0px)'] : ['blur(0px)', 'blur(20px)'],
+        },
+        {
+          duration: 400,
+          easing: "ease-in-out",
+          pseudoElement: isDark
+            ? "::view-transition-new(root)"
+            : "::view-transition-old(root)",
+        }
+      ).onfinish = () => {
+        document.documentElement.classList.remove('theme-transition-to-dark', 'theme-transition-to-light');
+      };
+    });
   };
 
   const handleLogoClick = (e: React.MouseEvent) => {

@@ -161,6 +161,50 @@ export default function SettingsPage() {
     }
   };
 
+  const handleThemeToggle = (newTheme: string) => {
+    if (theme === newTheme) return;
+    const isTransitioningToLight = newTheme === 'light';
+
+    if (!document.startViewTransition) {
+      setTheme(newTheme);
+      return;
+    }
+
+    const x = window.innerWidth / 2;
+    const y = window.innerHeight / 2;
+    const maxRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+    document.documentElement.classList.remove('theme-transition-to-dark', 'theme-transition-to-light');
+    document.documentElement.classList.add(isTransitioningToLight ? 'theme-transition-to-light' : 'theme-transition-to-dark');
+
+    const transition = document.startViewTransition(() => {
+      setTheme(newTheme);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${maxRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: isTransitioningToLight ? clipPath : [...clipPath].reverse(),
+          filter: isTransitioningToLight ? ['blur(20px)', 'blur(0px)'] : ['blur(0px)', 'blur(20px)'],
+        },
+        {
+          duration: 400,
+          easing: "ease-in-out",
+          pseudoElement: isTransitioningToLight
+            ? "::view-transition-new(root)"
+            : "::view-transition-old(root)",
+        }
+      ).onfinish = () => {
+        document.documentElement.classList.remove('theme-transition-to-dark', 'theme-transition-to-light');
+      };
+    });
+  };
+
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col md:flex-row overflow-hidden bg-background">
       {/* Left Sidebar */}
@@ -277,7 +321,7 @@ export default function SettingsPage() {
                       {mounted && (
                         <div className="flex items-center rounded-lg border border-border p-1 bg-background/50">
                           <button
-                            onClick={() => setTheme('dark')}
+                            onClick={() => handleThemeToggle('dark')}
                             className={`rounded-md px-4 py-2 text-sm font-medium transition-all ${
                               theme === 'dark' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-foreground/5'
                             }`}
@@ -285,7 +329,7 @@ export default function SettingsPage() {
                             Dark
                           </button>
                           <button
-                            onClick={() => setTheme('light')}
+                            onClick={() => handleThemeToggle('light')}
                             className={`rounded-md px-4 py-2 text-sm font-medium transition-all ${
                               theme === 'light' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-foreground/5'
                             }`}
