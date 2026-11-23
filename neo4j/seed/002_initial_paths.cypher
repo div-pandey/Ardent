@@ -2,53 +2,59 @@
 // Neo4j Career Graph - Initial Paths & Relationships
 // ============================================
 
-// Add some missing foundational roles
-MERGE (:Role {name: 'System Administrator', level: 'entry', industry: 'technology', demandScore: 0.70})
-MERGE (:Role {name: 'Network Engineer', level: 'mid', industry: 'technology', demandScore: 0.75})
-MERGE (:Role {name: 'Database Administrator', level: 'mid', industry: 'technology', demandScore: 0.78})
-MERGE (:Role {name: 'IT Support Specialist', level: 'entry', industry: 'technology', demandScore: 0.80})
-MERGE (:Role {name: 'Scrum Master', level: 'mid', industry: 'technology', demandScore: 0.82})
-MERGE (:Role {name: 'Agile Coach', level: 'senior', industry: 'technology', demandScore: 0.85});
+// 1. Foundational Roles
+UNWIND [
+  {name: 'System Administrator', level: 'entry', industry: 'technology', demandScore: 0.70},
+  {name: 'Network Engineer', level: 'mid', industry: 'technology', demandScore: 0.75},
+  {name: 'Database Administrator', level: 'mid', industry: 'technology', demandScore: 0.78},
+  {name: 'IT Support Specialist', level: 'entry', industry: 'technology', demandScore: 0.80},
+  {name: 'Scrum Master', level: 'mid', industry: 'technology', demandScore: 0.82},
+  {name: 'Agile Coach', level: 'senior', industry: 'technology', demandScore: 0.85}
+] AS roleData
+MERGE (r:Role {name: roleData.name})
+ON CREATE SET r.level = roleData.level,
+              r.industry = roleData.industry,
+              r.demandScore = roleData.demandScore;
 
-// Core Career Transitions
-MATCH (a:Role {name: 'IT Support Specialist'}), (b:Role {name: 'System Administrator'})
-MERGE (a)-[:LEADS_TO {avgTransitionMonths: 18, commonality: 0.8, difficulty: 'moderate'}]->(b);
+// 2. Career Transitions (LEADS_TO)
+UNWIND [
+  {from: 'IT Support Specialist', to: 'System Administrator', months: 18, commonality: 0.8, difficulty: 'moderate'},
+  {from: 'System Administrator', to: 'DevOps Engineer', months: 24, commonality: 0.6, difficulty: 'hard'},
+  {from: 'Database Administrator', to: 'Data Engineer', months: 12, commonality: 0.5, difficulty: 'moderate'},
+  {from: 'Software Engineer', to: 'Scrum Master', months: 12, commonality: 0.2, difficulty: 'easy'},
+  {from: 'Scrum Master', to: 'Agile Coach', months: 24, commonality: 0.7, difficulty: 'moderate'},
+  {from: 'Data Analyst', to: 'Product Manager', months: 18, commonality: 0.3, difficulty: 'hard'}
+] AS t
+MATCH (a:Role {name: t.from}), (b:Role {name: t.to})
+MERGE (a)-[r:LEADS_TO]->(b)
+ON CREATE SET r.avgTransitionMonths = t.months,
+              r.commonality = t.commonality,
+              r.difficulty = t.difficulty;
 
-MATCH (a:Role {name: 'System Administrator'}), (b:Role {name: 'DevOps Engineer'})
-MERGE (a)-[:LEADS_TO {avgTransitionMonths: 24, commonality: 0.6, difficulty: 'hard'}]->(b);
+// 3. Skills (MERGE by name to respect uniqueness constraint)
+UNWIND [
+  {name: 'Linux Administration', category: 'tool', difficulty: 'intermediate', estimatedHours: 40, popularity: 0.80},
+  {name: 'Docker', category: 'tool', difficulty: 'intermediate', estimatedHours: 40, popularity: 0.80},
+  {name: 'Kubernetes', category: 'tool', difficulty: 'advanced', estimatedHours: 80, popularity: 0.65},
+  {name: 'Agile Methodologies', category: 'methodology', difficulty: 'beginner', estimatedHours: 20, popularity: 0.85},
+  {name: 'SQL', category: 'programming_language', difficulty: 'beginner', estimatedHours: 40, popularity: 0.85},
+  {name: 'PostgreSQL', category: 'tool', difficulty: 'intermediate', estimatedHours: 40, popularity: 0.70}
+] AS sData
+MERGE (s:Skill {name: sData.name})
+ON CREATE SET s.category = sData.category,
+              s.difficulty = sData.difficulty,
+              s.estimatedHours = sData.estimatedHours,
+              s.popularity = sData.popularity;
 
-MATCH (a:Role {name: 'Database Administrator'}), (b:Role {name: 'Data Engineer'})
-MERGE (a)-[:LEADS_TO {avgTransitionMonths: 12, commonality: 0.5, difficulty: 'moderate'}]->(b);
-
-MATCH (a:Role {name: 'Software Engineer'}), (b:Role {name: 'Scrum Master'})
-MERGE (a)-[:LEADS_TO {avgTransitionMonths: 12, commonality: 0.2, difficulty: 'easy'}]->(b);
-
-MATCH (a:Role {name: 'Scrum Master'}), (b:Role {name: 'Agile Coach'})
-MERGE (a)-[:LEADS_TO {avgTransitionMonths: 24, commonality: 0.7, difficulty: 'moderate'}]->(b);
-
-MATCH (a:Role {name: 'Data Analyst'}), (b:Role {name: 'Product Manager'})
-MERGE (a)-[:LEADS_TO {avgTransitionMonths: 18, commonality: 0.3, difficulty: 'hard'}]->(b);
-
-// Core Skills
-MERGE (:Skill {name: 'Linux Administration', category: 'infrastructure', demandScore: 0.8})
-MERGE (:Skill {name: 'Docker', category: 'infrastructure', demandScore: 0.9})
-MERGE (:Skill {name: 'Kubernetes', category: 'infrastructure', demandScore: 0.85})
-MERGE (:Skill {name: 'Agile Methodologies', category: 'management', demandScore: 0.85})
-MERGE (:Skill {name: 'SQL', category: 'database', demandScore: 0.95})
-MERGE (:Skill {name: 'PostgreSQL', category: 'database', demandScore: 0.90});
-
-// Link Skills to Roles
-MATCH (r:Role {name: 'System Administrator'}), (s:Skill {name: 'Linux Administration'})
-MERGE (r)-[:REQUIRES {importance: 'high', proficiencyLevel: 'advanced'}]->(s);
-
-MATCH (r:Role {name: 'DevOps Engineer'}), (s:Skill {name: 'Docker'})
-MERGE (r)-[:REQUIRES {importance: 'high', proficiencyLevel: 'intermediate'}]->(s);
-
-MATCH (r:Role {name: 'DevOps Engineer'}), (s:Skill {name: 'Kubernetes'})
-MERGE (r)-[:REQUIRES {importance: 'high', proficiencyLevel: 'intermediate'}]->(s);
-
-MATCH (r:Role {name: 'Scrum Master'}), (s:Skill {name: 'Agile Methodologies'})
-MERGE (r)-[:REQUIRES {importance: 'critical', proficiencyLevel: 'advanced'}]->(s);
-
-MATCH (r:Role {name: 'Database Administrator'}), (s:Skill {name: 'SQL'})
-MERGE (r)-[:REQUIRES {importance: 'critical', proficiencyLevel: 'expert'}]->(s);
+// 4. Role Skill Requirements (REQUIRES_SKILL)
+UNWIND [
+  {role: 'System Administrator', skill: 'Linux Administration', importance: 'must_have', minimumLevel: 'advanced'},
+  {role: 'DevOps Engineer', skill: 'Docker', importance: 'must_have', minimumLevel: 'advanced'},
+  {role: 'DevOps Engineer', skill: 'Kubernetes', importance: 'must_have', minimumLevel: 'intermediate'},
+  {role: 'Scrum Master', skill: 'Agile Methodologies', importance: 'must_have', minimumLevel: 'advanced'},
+  {role: 'Database Administrator', skill: 'SQL', importance: 'must_have', minimumLevel: 'advanced'}
+] AS req
+MATCH (r:Role {name: req.role}), (s:Skill {name: req.skill})
+MERGE (r)-[rel:REQUIRES_SKILL]->(s)
+ON CREATE SET rel.importance = req.importance,
+              rel.minimumLevel = req.minimumLevel;
